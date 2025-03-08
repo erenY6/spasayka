@@ -1,18 +1,30 @@
 <template>
   <header
-    class="bg-white shadow-md px-8 py-4 flex items-center justify-between w-full fixed top-0 left-0"
+    class="font-[Signate_Grotesk] border-b-black border-b-1 px-8 py-3 flex items-center justify-between w-full"
   >
-    <h1 class="text-3xl font-semibold text-gray-800">Мое веб-приложение</h1>
-    <nav class="space-x-6">
-      <router-link to="/" class="text-lg text-gray-700 hover:text-blue-600 transition"
-        >Главная</router-link
+    <div class="">
+      <router-link
+        to="/"
+        class="flex justify-center items-center bg-[#d0d075] min-w-[115px] min-h-[40px] rounded-[30px]"
       >
-      <router-link to="/about" class="text-lg text-gray-700 hover:text-blue-600 transition"
-        >О нас</router-link
-      >
-      <router-link to="/contact" class="text-lg text-gray-700 hover:text-blue-600 transition"
-        >Контакты</router-link
-      >
+        <img src="@/assets/logo.svg" alt="Логотип" class="h-6 mr-2" />
+        СпасайКа
+      </router-link>
+    </div>
+
+    <nav class="flex space-x-6">
+      <router-link to="/about">О нас</router-link>
+      <router-link to="/ads">Объявления</router-link>
+      <router-link to="/volunteer">Стать волонтером</router-link>
+      <router-link to="/shelters">Приюты</router-link>
+      <router-link to="/map">Карта</router-link>
     </nav>
+
+    <router-link
+      to="/auth"
+      class="flex justify-center bg-[#d0d075] min-w-[160px] min-h-[40px] items-center rounded-[30px]"
+    >
+      Регистрация / Вход
+    </router-link>
   </header>
 </template>
