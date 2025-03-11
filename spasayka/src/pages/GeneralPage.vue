@@ -1,7 +1,11 @@
 <script setup>
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
-import 'swiper/css'
-import 'swiper/css/pagination'
+
+import content from '@/data/content.json'
+import starIcon from '@/assets/star.svg'
+import dogCatImage from '@/assets/dog-cat.svg'
+import catPng from '@/assets/cat.png'
+
 const pets = [
   {
     name: 'Ириска',
@@ -12,54 +16,24 @@ const pets = [
     image: catPng,
     description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
   },
-  {
-    name: 'Ириска',
-    gender: 'девочка',
-    age: '2,5 мес.',
-    info1: 'Инфа какая-то',
-    info2: 'Инфа какая-то',
-    image: catPng,
-    description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
-  },
-  {
-    name: 'Ириска',
-    gender: 'девочка',
-    age: '2,5 мес.',
-    info1: 'Инфа какая-то',
-    info2: 'Инфа какая-то',
-    image: catPng,
-    description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
-  },
-  {
-    name: 'Ириска',
-    gender: 'девочка',
-    age: '2,5 мес.',
-    info1: 'Инфа какая-то',
-    info2: 'Инфа какая-то',
-    image: catPng,
-    description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
-  },
 ]
-
-import content from '@/data/content.json'
-import starIcon from '@/assets/star.svg'
-import dogCatImage from '@/assets/dog-cat.svg'
-import catPng from '@/assets/cat.png'
 </script>
 
 <template>
-  <div class="max-w-[1400px] mx-auto px-8 py-10 space-y-12">
-    <section class="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10">
-      <div class="relative flex-1 min-w-[280px] max-w-[50%]">
+  <div class="max-w-[1400px] mx-auto px-6 py-10 space-y-12">
+    <section
+      class="flex flex-col lg:flex-row items-stretch gap-10 max-w-[1400px] mx-auto px-6 py-6"
+    >
+      <div class="relative flex-1 flex">
         <div
-          class="relative bg-[#D9EDC3] rounded-[30px] p-6 md:p-8 lg:p-10 font-[Signate_Grotesk] flex flex-col justify-center overflow-hidden h-full"
+          class="relative bg-[#D9EDC3] rounded-[30px] p-8 font-[Signate_Grotesk] flex flex-col justify-center overflow-hidden w-full"
         >
           <div class="absolute right-0 top-0 h-full w-1/2 bg-[#BBD492] rounded-l-[190px]"></div>
-          <h2 class="text-2xl md:text-3xl font-bold mb-6 text-[#3D3E2B] text-center relative z-10">
+          <h2 class="text-3xl font-bold mb-6 text-[#3D3E2B] text-center relative z-10">
             {{ content.aboutSection.title }}
           </h2>
           <div
-            class="space-y-4 text-[#545547] leading-relaxed text-justify relative z-10 text-sm md:text-base"
+            class="space-y-4 text-[#545547] leading-relaxed text-justify relative z-10 text-base"
           >
             <p>{{ content.aboutSection.paragraph1 }}</p>
             <p>{{ content.aboutSection.paragraph2 }}</p>
@@ -68,25 +42,27 @@ import catPng from '@/assets/cat.png'
         </div>
       </div>
 
-      <div class="flex flex-col items-center gap-4 flex-shrink-0">
+      <!-- Центр: звезды -->
+      <div class="flex flex-col items-center justify-center gap-4 flex-shrink-0">
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
       </div>
 
-      <div class="flex-1 min-w-[280px] max-w-[50%]">
-        <img :src="dogCatImage" class="w-full h-full object-contain rounded-[20px]" />
+      <!-- Картинка -->
+      <div class="flex-1 flex">
+        <img :src="dogCatImage" class="w-full h-full object-cover rounded-[20px]" />
       </div>
     </section>
 
-    <section class="text-black max-w-[1400px] mx-auto px-6 py-10">
-      <h2 class="pb-[20px] font-[Signate_Grotesk] text-2xl font-bold text-center">
+    <section>
+      <h2 class="pb-6 font-[Signate_Grotesk] text-2xl font-bold text-center">
         Они нуждаются в вашей помощи
       </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
         <AdvertisementCard
-          v-for="(pet, index) in pets"
+          v-for="(pet, index) in Array(6).fill(pets[0])"
           :key="index"
           :name="pet.name"
           :gender="pet.gender"

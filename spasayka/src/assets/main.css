@@ -17,3 +17,28 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
+
+@font-face {
+  font-family: 'Overpass';
+  src: url('./fonts/Overpass-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Overpass Italic';
+  src: url('./fonts/Overpass-Italic-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: 'Overpass Black';
+  src: url('./fonts/static/Overpass-Black.ttf');
+}
+
+@font-face {
+  font-family: 'Overpass Regular';
+  src: url('./fonts/static/Overpass-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Overpass Medium';
+  src: url('./fonts/static/Overpass-Medium.ttf');
+}

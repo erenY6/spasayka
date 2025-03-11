@@ -1,5 +1,7 @@
 <template>
-  <header class="font-[Signate_Grotesk] border-b border-black px-8 py-3 flex items-center w-full">
+  <header
+    class="fixed top-0 left-0 w-full z-50 bg-white border-b border-black px-8 py-3 flex items-center font-[Signate_Grotesk]"
+  >
     <div class="flex items-center gap-8 flex-1">
       <router-link
         to="/"

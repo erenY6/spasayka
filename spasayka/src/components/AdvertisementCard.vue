@@ -1,4 +1,5 @@
 <script setup>
+import '../assets/main.css'
 import { ref } from 'vue'
 
 const props = defineProps({
@@ -32,16 +33,16 @@ const isFlipped = ref(false)
         <div
           class="absolute right-0 top-0 bg-[#D9C7B3] rounded-bl-[50px] px-3 pt-3 pb-6 min-w-[120px] text-right"
         >
-          <p class="font-[Overpass] font-bold leading-tight">{{ name }}</p>
-          <p class="text-sm -mt-1">{{ gender }}</p>
+          <p class="font-[Overpass_Black] leading-tight">{{ name }}</p>
+          <p class="font-[Overpass_Regular] -mt-1">{{ gender }}</p>
         </div>
         <div class="flex flex-col justify-between h-full flex-1 pl-1 relative">
           <div class="text-[18px] font-semibold mt-[50px]"></div>
 
           <div class="flex flex-col gap-1 text-sm w-[95%]">
-            <div class="text-[18px] font-semibold mt-[50px]">{{ age }}</div>
-            <p class="border-t border-[#AFA393] pt-1">{{ info1 }}</p>
-            <p class="border-t border-[#AFA393] pt-1">{{ info2 }}</p>
+            <div class="font-[Overpass_Medium] text-[18px] mt-[50px]">{{ age }}</div>
+            <p class="font-[Overpass_Medium] border-t border-[#AFA393] pt-1">{{ info1 }}</p>
+            <p class="font-[Overpass_Medium] border-t border-[#AFA393] pt-1">{{ info2 }}</p>
           </div>
         </div>
       </div>
@@ -53,17 +54,19 @@ const isFlipped = ref(false)
           class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#D9C7B3] rounded-bl-[50px] z-0"
         ></div>
 
-        <div class="relative z-10 space-y-4">
-          <div class="text-[14px] leading-tight font-semibold text-[#333]">
+        <div class="relative z-10 space-y-4 px-8">
+          <div class="font-[Signate_Grotesk] text-[14px] leading-tight text-[#55463A] text-justify">
             {{ description }}
           </div>
         </div>
 
-        <button
-          class="mx-auto border border-[#5C432D] rounded-[10px] px-6 py-1 text-[16px] font-semibold relative z-10"
-        >
-          Узнать больше
-        </button>
+        <div class="w-full flex justify-center">
+          <button
+            class="w-1/2 border-[2px] border-dashed border-[#5C432D] rounded-[10px] px-6 py-1 font-[Overpass_Medium] text-[16px]"
+          >
+            Узнать больше
+          </button>
+        </div>
       </div>
     </div>
   </div>
