@@ -3,7 +3,7 @@
 
 #app {
   min-height: 100vh;
-  min-width: 100vw;
+  min-width: 100%;
   overflow: hidden;
   margin: 0;
   padding: 0;
