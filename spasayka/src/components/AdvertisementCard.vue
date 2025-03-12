@@ -49,7 +49,7 @@ const isFlipped = ref(false)
       </div>
 
       <div
-        class="absolute w-full h-full rounded-[20px] bg-[#F7E8DA] p-4 flex flex-col justify-between rotate-y-180 backface-hidden relative overflow-hidden"
+        class="w-full h-full rounded-[20px] bg-[#F7E8DA] p-4 flex flex-col justify-between rotate-y-180 backface-hidden relative overflow-hidden"
       >
         <div
           class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#D9C7B3] rounded-bl-[50px] z-0"

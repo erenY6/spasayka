@@ -36,7 +36,7 @@ const shelters = [
 </script>
 
 <template>
-  <div class="max-w-[1400px] mx-auto px-6 py-10 space-y-12">
+  <div class="max-w-[1400px] mx-auto px-6 py-6 space-y-12">
     <section
       class="flex flex-col lg:flex-row items-stretch gap-10 max-w-[1400px] mx-auto px-6 py-6"
     >
