@@ -1,5 +1,6 @@
 <script setup>
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
+import MapBlock from '@/components/MapBlock.vue'
 
 import content from '@/data/content.json'
 import starIcon from '@/assets/star.svg'
@@ -42,14 +43,12 @@ const pets = [
         </div>
       </div>
 
-      <!-- Центр: звезды -->
       <div class="flex flex-col items-center justify-center gap-4 flex-shrink-0">
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
         <img :src="starIcon" class="w-10 h-10 md:w-12 md:h-12" />
       </div>
 
-      <!-- Картинка -->
       <div class="flex-1 flex">
         <img :src="dogCatImage" class="w-full h-full object-cover rounded-[20px]" />
       </div>
@@ -74,5 +73,8 @@ const pets = [
         />
       </div>
     </section>
+    <div class="max-w-[1400px] mx-auto px-6 py-10 space-y-12">
+      <MapBlock></MapBlock>
+    </div>
   </div>
 </template>

@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import '../assets/main.css'
 import { ref } from 'vue'
