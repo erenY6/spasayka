@@ -1,11 +1,13 @@
 <script setup>
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
 import MapBlock from '@/components/MapBlock.vue'
+import ShelterCard from '@/components/ShelterCard.vue'
 
 import content from '@/data/content.json'
 import starIcon from '@/assets/star.svg'
 import dogCatImage from '@/assets/dog-cat.svg'
 import catPng from '@/assets/cat.png'
+import shelterLogo from '@/assets/shelterLogo.png'
 
 const pets = [
   {
@@ -16,6 +18,19 @@ const pets = [
     info2: 'Инфа какая-то',
     image: catPng,
     description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
+  },
+]
+
+const shelters = [
+  {
+    name: 'Фонд "Помощь бездомным собакам"',
+    address: 'Санкт-Петербург, проспект Большой Смоленский, д. 9',
+    phone: '8 (911) 0-999-666',
+    email: 'info@priut.ru',
+    website: 'https://priut.ru/',
+    logo: shelterLogo,
+    about:
+      'История спасения бездомных животных Кирой Никитиной и Татьяной Шеиной началась в 2001 году, когда в Санкт-Петербурге был зарегистрирован Благотворительный Фонд «Помощь бездомным собакам».',
   },
 ]
 </script>
@@ -76,5 +91,24 @@ const pets = [
     <div class="max-w-[1400px] mx-auto px-6 py-10 space-y-12">
       <MapBlock></MapBlock>
     </div>
+    <section>
+      <h2 class="pb-6 font-[Signate_Grotesk] text-2xl font-bold text-center">
+        Приюты, с которыми мы сотрудничаем
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 justify-items-center">
+        <ShelterCard
+          v-for="(shelter, index) in Array(4).fill(shelters[0])"
+          :key="index"
+          :name="shelter.name"
+          :address="shelter.address"
+          :phone="shelter.phone"
+          :email="shelter.email"
+          :website="shelter.website"
+          :logo="shelter.logo"
+          :about="shelter.about"
+        />
+      </div>
+    </section>
   </div>
 </template>
