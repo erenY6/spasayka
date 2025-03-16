@@ -41,3 +41,8 @@ a,
   font-family: 'Overpass Medium';
   src: url('./fonts/static/Overpass-Medium.ttf');
 }
+
+@font-face {
+  font-family: 'Overpass SemiBold';
+  src: url('./fonts/static/Overpass-SemiBold.ttf');
+}

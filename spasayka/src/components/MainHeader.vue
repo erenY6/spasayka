@@ -16,9 +16,9 @@
       <nav class="flex gap-6">
         <router-link to="/about">О нас</router-link>
         <router-link to="/ads">Объявления</router-link>
-        <router-link to="/volunteer">Стать волонтером</router-link>
         <router-link to="/shelters">Приюты</router-link>
         <router-link to="/map">Карта</router-link>
+        <router-link to="/createAds">Создать объявление</router-link>
       </nav>
     </div>
 

@@ -6,7 +6,7 @@ import MainHeader from '@/components/MainHeader.vue'
 <template>
   <div id="app" class="text-black min-h-screen flex flex-col bg-white">
     <MainHeader />
-    <main class="flex-1 flex items-center justify-center">
+    <main class="flex-1 flex justify-center">
       <RouterView />
     </main>
   </div>
