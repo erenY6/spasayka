@@ -47,7 +47,11 @@ const items = [
           :key="index"
           class="relative w-full flex items-center justify-center font-[Overpass_Black] text-[17px] text-[#333] min-h-[60px]"
         >
-          <img :src="item.bg" preserveAspectRatio="none" class="absolute inset-0 w-full" />
+          <img
+            :src="item.bg"
+            preserveAspectRatio="none"
+            class="absolute items-center inset-0 w-full"
+          />
 
           <span class="relative pt-4 z-10 text-center px-17 leading-snug">
             {{ item.text }}
@@ -72,7 +76,11 @@ const items = [
           :key="index"
           class="hover:scale-[1.02] active:scale-95 cursor-pointer relative w-full flex items-center justify-center font-[Overpass_Black] text-[17px] text-[#333] min-h-[60px]"
         >
-          <img :src="item.bg2" preserveAspectRatio="none" class="absolute inset-0 w-full" />
+          <img
+            :src="item.bg2"
+            preserveAspectRatio="none"
+            class="absolute items-center inset-0 w-full"
+          />
 
           <span class="relative pt-4 z-10 text-center px-17 leading-snug">
             {{ item.text2 }}
