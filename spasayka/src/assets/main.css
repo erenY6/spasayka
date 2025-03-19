@@ -2,19 +2,11 @@
 @import 'tailwindcss';
 
 #app {
-  min-height: 100vh;
+  min-height: 100%;
   min-width: 100%;
   margin: 0;
   padding: 0;
   font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: black;
-  transition: 0.4s;
-  padding: 3px;
 }
 
 @font-face {
