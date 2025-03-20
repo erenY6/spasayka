@@ -5,7 +5,7 @@
     <div class="flex items-center gap-8 flex-1">
       <router-link
         to="/"
-        class="flex items-center bg-[#d0d075] min-w-[115px] px-10 min-h-[40px] rounded-full"
+        class="flex items-center bg-[#d0d075] min-w-[115px] px-2 min-h-[40px] rounded-full"
       >
         <div class="flex px-4 gap-2">
           <img src="@/assets/logo.svg" alt="Логотип" class="h-6 mr-2" />
