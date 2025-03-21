@@ -1,4 +1,7 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useAdsStore } from '@/stores/adsStore'
+
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
 import MapBlock from '@/components/MapBlock.vue'
 import ShelterCard from '@/components/ShelterCard.vue'
@@ -8,6 +11,13 @@ import starIcon from '@/assets/star.svg'
 import dogCatImage from '@/assets/dog-cat.svg'
 import catPng from '@/assets/cat.png'
 import shelterLogo from '@/assets/shelterLogo.png'
+
+const adsStore = useAdsStore()
+
+onMounted(async () => {
+  adsStore.loadAds()
+  console.log(await adsStore.loadAds())
+})
 
 const pets = [
   {
