@@ -4,6 +4,7 @@ import AboutPage from '../pages/AboutPage.vue'
 import AdvertisementPage from '../pages/AdvertisementPage.vue'
 import SheltersPage from '../pages/SheltersPage.vue'
 import AuthPage from '../pages/AuthPage.vue'
+import IndividualAdPage from '../pages/IndividualAdPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/auth',
       name: 'auth',
       component: AuthPage,
+    },
+    {
+      path: '/IdAd',
+      name: 'IdAd',
+      component: IndividualAdPage,
     },
   ],
 })

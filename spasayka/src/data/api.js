@@ -2,9 +2,12 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
 
-// 🔐 Автоматически добавляем токен из localStorage во все запросы
+// Автоматически добавляем токен к каждому запросу
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
@@ -13,25 +16,35 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-export default api
-
-// API-запросы
+// Запрос на получение объявлений
 export async function fetchAds() {
   const response = await api.get('/animal-ad')
   return response.data
 }
 
-export async function registerUser({ email, password, name }) {
-  const response = await api.post('/auth/register', { email, password, name })
+// Регистрация пользователя
+export async function registerUser({ name, surname, email, phone, password }) {
+  const response = await api.post('/auth/register', {
+    name,
+    surname,
+    email,
+    phone,
+    password,
+  })
   return response.data
 }
 
-export async function loginUser({ email, password }) {
-  const response = await api.post('/auth/login', { email, password })
+// Авторизация
+export async function loginUser({ emailOrPhone, password }) {
+  const response = await api.post('/auth/login', {
+    emailOrPhone,
+    password,
+  })
   return response.data
 }
 
+// Получение текущего пользователя
 export async function fetchCurrentUser() {
-  const res = await api.get('/auth/me')
-  return res.data
+  const response = await api.get('/auth/me')
+  return response.data
 }

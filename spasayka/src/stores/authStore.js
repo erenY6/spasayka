@@ -8,17 +8,20 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    async register({ email, password, name }) {
-      await registerUser({ email, password, name })
+    // Регистрация
+    async register({ name, surname, email, phone, password }) {
+      await registerUser({ name, surname, email, phone, password })
     },
 
-    async login({ email, password }) {
-      const { token } = await loginUser({ email, password })
+    // Авторизация
+    async login({ emailOrPhone, password }) {
+      const { token } = await loginUser({ emailOrPhone, password })
       this.token = token
       localStorage.setItem('token', token)
       await this.fetchUser()
     },
 
+    // Получение текущего пользователя
     async fetchUser() {
       try {
         this.user = await fetchCurrentUser()
@@ -28,6 +31,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // Выход
     logout() {
       this.token = ''
       this.user = null

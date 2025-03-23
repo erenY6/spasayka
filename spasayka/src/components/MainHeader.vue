@@ -28,10 +28,16 @@ const authStore = useAuthStore()
       </nav>
     </div>
 
-    <div v-if="authStore.user?.email" class="flex items-center gap-4">
+    <div v-if="authStore.user" class="flex items-center gap-4">
       <div class="flex items-center gap-2">
         <span class="text-sm">Вы вошли как:</span>
-        <span class="font-semibold">{{ authStore.user.email }}</span>
+        <span v-if="authStore.user.name && authStore.user.surname" class="font-semibold">
+          {{ authStore.user.name }}
+          {{ authStore.user.surname }}
+        </span>
+        <span v-else-if="authStore.user.name" class="font-semibold">
+          {{ authStore.user.name }}
+        </span>
       </div>
       <button @click="authStore.logout()" class="text-sm text-red-500 hover:underline transition">
         Выйти

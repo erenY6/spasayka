@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useRouter } from 'vue-router'
 import AuthBg from '@/assets/allPictures/AuthBg.png'
 import close from '@/assets/allPictures/close.svg'
 import emailIcon from '@/assets/iconEmail.svg'
+import iconPhone from '@/assets/allPictures/phone2.svg'
 import eyeOpen from '@/assets/allPictures/eye-open.svg'
 import eyeClosed from '@/assets/allPictures/eye-closed.svg'
 
@@ -13,6 +14,9 @@ const showPassword = ref(false)
 
 const passwordReg = ref('')
 const showPasswordReg = ref(false)
+
+const useEmail = ref(true)
+const useEmailAuth = ref(true)
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
@@ -23,9 +27,10 @@ const togglePasswordVisibilityReg = () => {
 }
 
 const activeTab = ref('register')
-const phoneNumber = ref('')
+const phoneNumberReg = ref('')
+const phoneNumberLogin = ref('')
 
-const formatPhoneNumber = (event) => {
+const formatPhoneNumber = (event, targetRef) => {
   let input = event.target.value.replace(/\D/g, '')
   if (input.startsWith('7')) {
     input = input.slice(1)
@@ -37,30 +42,42 @@ const formatPhoneNumber = (event) => {
   if (input.length >= 7) formatted += `-${input.slice(6, 8)}`
   if (input.length >= 9) formatted += `-${input.slice(8, 10)}`
 
-  phoneNumber.value = formatted
+  // Обновляем значение и в ref, и в поле
+  targetRef.value = formatted
+  event.target.value = formatted
 }
+
+const handlePhoneInputLogin = (e) => formatPhoneNumber(e, phoneNumberLogin)
+const handlePhoneInputReg = (e) => formatPhoneNumber(e, phoneNumberReg)
 
 const authStore = useAuthStore()
 const router = useRouter()
 
 // регистрация
 const nameReg = ref('')
+const surnameReg = ref('')
 const emailReg = ref('')
 const registerError = ref('')
 
 const handleRegister = async () => {
   registerError.value = ''
-
-  if (!nameReg.value || !emailReg.value || !passwordReg.value) {
+  if (
+    !nameReg.value ||
+    !surnameReg.value ||
+    !passwordReg.value ||
+    (useEmail.value && !emailReg.value) ||
+    (!useEmail.value && !phoneNumberReg.value)
+  ) {
     registerError.value = 'Пожалуйста, заполните все поля'
     return
   }
-
   try {
     await authStore.register({
-      email: emailReg.value,
-      password: passwordReg.value,
       name: nameReg.value,
+      surname: surnameReg.value,
+      password: passwordReg.value,
+      email: useEmail.value ? emailReg.value : undefined,
+      phone: !useEmail.value ? phoneNumberReg.value : undefined,
     })
     activeTab.value = 'login'
   } catch (e) {
@@ -75,14 +92,16 @@ const loginError = ref('')
 const handleLogin = async () => {
   loginError.value = ''
 
-  if (!emailLogin.value || !password.value) {
-    loginError.value = 'Введите почту и пароль'
+  const identifier = useEmailAuth.value ? emailLogin.value : phoneNumberLogin.value
+
+  if (!identifier || !password.value) {
+    loginError.value = 'Введите ' + (useEmailAuth.value ? 'почту' : 'телефон') + ' и пароль'
     return
   }
 
   try {
     await authStore.login({
-      email: emailLogin.value,
+      emailOrPhone: identifier,
       password: password.value,
     })
     router.push('/')
@@ -90,6 +109,24 @@ const handleLogin = async () => {
     loginError.value = e.response?.data?.message || 'Ошибка входа'
   }
 }
+
+watch(activeTab, (newTab) => {
+  if (newTab === 'register') {
+    // очистить авторизацию
+    emailLogin.value = ''
+    phoneNumberLogin.value = ''
+    password.value = ''
+    loginError.value = ''
+  } else {
+    // очистить регистрацию
+    nameReg.value = ''
+    surnameReg.value = ''
+    emailReg.value = ''
+    phoneNumberReg.value = ''
+    passwordReg.value = ''
+    registerError.value = ''
+  }
+})
 </script>
 
 <template>
@@ -126,12 +163,16 @@ const handleLogin = async () => {
           <h2 class="text-center py-8 font-[Overpass_Medium] text-[20px]">Зарегистрироваться</h2>
 
           <button
+            @click="useEmail = !useEmail"
             class="flex items-center justify-center border border-black rounded-full py-1 px-6 hover:bg-gray-100 transition"
           >
-            <img :src="emailIcon" class="w-10 h-10 pr-2" />
-            Зарегистрироваться с помощью почты
+            <img :src="useEmail ? iconPhone : emailIcon" class="w-10 h-10 pr-2" />
+            {{
+              useEmail
+                ? 'Зарегистрироваться с помощью телефона'
+                : 'Зарегистрироваться с помощью почты'
+            }}
           </button>
-
           <div class="flex items-center w-[65%] py-4">
             <div class="border-t border-[#D9D9D9] w-full"></div>
             <span class="px-4 text-gray-500">ИЛИ</span>
@@ -147,21 +188,27 @@ const handleLogin = async () => {
                 class="w-1/2 p-3 border rounded-[18px]"
               />
               <input
-                v-model="emailReg"
+                v-model="surnameReg"
                 type="text"
-                placeholder="Почта"
+                placeholder="Фамилия"
                 class="w-1/2 p-3 border rounded-[18px]"
               />
             </div>
 
             <input
+              v-if="useEmail"
+              v-model="emailReg"
+              type="email"
+              placeholder="Почта"
+              class="w-full p-3 border rounded-[18px] mb-5"
+            />
+            <input
+              v-else
               type="tel"
-              v-model="phoneNumber"
-              @input="formatPhoneNumber"
+              v-model="phoneNumberReg"
+              @input="handlePhoneInputLogin"
               placeholder="+7 (XXX) XXX-XX-XX"
-              class="w-full p-3 border rounded-[18px]"
-              inputmode="tel"
-              maxlength="18"
+              class="w-full p-3 border rounded-[18px] mb-5"
             />
 
             <div class="relative flex items-center justify-center w-full pb-5 py-5">
@@ -197,11 +244,27 @@ const handleLogin = async () => {
         </div>
         <div v-if="activeTab == 'login'" class="w-full flex flex-col justify-center items-center">
           <h2 class="text-center py-8 font-[Overpass_Medium] text-[20px]">Войти</h2>
-          <div class="flex items-center justify-center w-full pb-5">
+          <button
+            @click="useEmailAuth = !useEmailAuth"
+            class="w-[65%] flex items-center justify-center border border-black rounded-full py-1 px-6 hover:bg-gray-100 transition"
+          >
+            <img :src="useEmailAuth ? iconPhone : emailIcon" class="w-10 h-10 pr-2" />
+            {{ useEmailAuth ? 'Войти с помощью телефона' : 'Войти с помощью почты' }}
+          </button>
+          <div class="flex items-center justify-center w-full py-5">
             <input
+              v-if="useEmailAuth"
               v-model="emailLogin"
               type="text"
               placeholder="Почта или номер телефона"
+              class="w-[65%] p-3 border rounded-[18px]"
+            />
+            <input
+              v-else
+              type="tel"
+              v-model="phoneNumberLogin"
+              @input="handlePhoneInputReg"
+              placeholder="+7 (XXX) XXX-XX-XX"
               class="w-[65%] p-3 border rounded-[18px]"
             />
           </div>
