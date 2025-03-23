@@ -1,6 +1,13 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import MainHeader from '@/components/MainHeader.vue'
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+
+if (authStore.token) {
+  authStore.fetchUser()
+}
 </script>
 
 <template>

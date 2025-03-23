@@ -1,3 +1,9 @@
+<script setup>
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
+</script>
+
 <template>
   <header
     class="sticky top-0 left-0 w-full z-50 bg-white border-b border-black px-12 py-3 flex items-center text-[17px] font-[Signate_Grotesk]"
@@ -22,7 +28,18 @@
       </nav>
     </div>
 
+    <div v-if="authStore.user?.email" class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-sm">Вы вошли как:</span>
+        <span class="font-semibold">{{ authStore.user.email }}</span>
+      </div>
+      <button @click="authStore.logout()" class="text-sm text-red-500 hover:underline transition">
+        Выйти
+      </button>
+    </div>
+
     <router-link
+      v-else
       to="/auth"
       class="flex items-center justify-center bg-[#d0d075] min-w-[160px] min-h-[40px] rounded-full"
     >

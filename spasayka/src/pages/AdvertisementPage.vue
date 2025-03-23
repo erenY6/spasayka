@@ -1,14 +1,28 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useAdsStore } from '@/stores/adsStore'
+
 import BaseSelect from '@/components/BaseSelect.vue'
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
-import catPng from '@/assets/cat.png'
 
 const animalType = ref('Любой')
 const gender = ref('Любой')
 const age = ref('Любой')
 const height = ref('Любая')
 const condition = ref('Любое')
+
+const adsStore = useAdsStore()
+
+onMounted(async () => {
+  await adsStore.loadAds()
+  console.log(adsStore.ads)
+})
+
+const pets = ref([adsStore.ads])
+
+watch(adsStore, (newvalue) => {
+  pets.value = newvalue.ads
+})
 
 const animalOptions = [
   { label: 'Любой', value: 'Любой' },
@@ -40,23 +54,10 @@ const conditionOptions = [
   { label: 'Здоров', value: 'Здоров' },
   { label: 'Нуждается в лечении', value: 'Болен' },
 ]
-
-const pets = [
-  {
-    name: 'Ириска',
-    gender: 'девочка',
-    age: '2,5 мес.',
-    info1: 'Инфа какая-то',
-    info2: 'Инфа какая-то',
-    image: catPng,
-    description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
-  },
-]
-// И другие селекторы аналогично
 </script>
 
 <template>
-  <div class="flex flex-col w-full px-12 py-6">
+  <div class="flex flex-col w-full min-h-screen px-12 py-6">
     <h2 class="pb-6 font-[Signate_Grotesk] text-2xl">Кого вы ищите?</h2>
     <div class="flex w-full items-center space-y-4 gap-5 pb-7">
       <BaseSelect v-model="animalType" title="Вид животного" :options="animalOptions" />
@@ -67,14 +68,14 @@ const pets = [
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
       <AdvertisementCard
-        v-for="(pet, index) in Array(12).fill(pets[0])"
-        :key="index"
+        v-for="pet in pets"
+        :key="pet.id"
         :name="pet.name"
         :gender="pet.gender"
         :age="pet.age"
         :info1="pet.info1"
         :info2="pet.info2"
-        :image="pet.image"
+        :image="'http://localhost:3000' + pet.image"
         :description="pet.description"
       />
     </div>

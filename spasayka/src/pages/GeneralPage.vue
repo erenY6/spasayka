@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useAdsStore } from '@/stores/adsStore'
 
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
@@ -9,27 +9,20 @@ import ShelterCard from '@/components/ShelterCard.vue'
 import content from '@/data/content.json'
 import starIcon from '@/assets/star.svg'
 import dogCatImage from '@/assets/dog-cat.svg'
-import catPng from '@/assets/cat.png'
 import shelterLogo from '@/assets/shelterLogo.png'
 
 const adsStore = useAdsStore()
 
 onMounted(async () => {
-  adsStore.loadAds()
-  console.log(await adsStore.loadAds())
+  await adsStore.loadAds()
+  console.log(adsStore.ads)
 })
 
-const pets = [
-  {
-    name: 'Ириска',
-    gender: 'девочка',
-    age: '2,5 мес.',
-    info1: 'Инфа какая-то',
-    info2: 'Инфа какая-то',
-    image: catPng,
-    description: 'Мейби описание какое-нибудь ещё. Мейби описание ещё одно длинное для примера.',
-  },
-]
+const pets = ref([adsStore.ads])
+
+watch(adsStore, (newvalue) => {
+  pets.value = newvalue.ads
+})
 
 const shelters = [
   {
@@ -86,14 +79,14 @@ const shelters = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
         <AdvertisementCard
-          v-for="(pet, index) in Array(6).fill(pets[0])"
-          :key="index"
+          v-for="pet in pets"
+          :key="pet.id"
           :name="pet.name"
           :gender="pet.gender"
           :age="pet.age"
           :info1="pet.info1"
           :info2="pet.info2"
-          :image="pet.image"
+          :image="'http://localhost:3000' + pet.image"
           :description="pet.description"
         />
       </div>

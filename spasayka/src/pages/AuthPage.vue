@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router'
 import AuthBg from '@/assets/allPictures/AuthBg.png'
 import close from '@/assets/allPictures/close.svg'
 import emailIcon from '@/assets/iconEmail.svg'
@@ -21,13 +23,12 @@ const togglePasswordVisibilityReg = () => {
 }
 
 const activeTab = ref('register')
-
 const phoneNumber = ref('')
 
 const formatPhoneNumber = (event) => {
-  let input = event.target.value.replace(/\D/g, '') // Удаляем все нецифровые символы
+  let input = event.target.value.replace(/\D/g, '')
   if (input.startsWith('7')) {
-    input = input.slice(1) // Убираем начальную "7", так как "+7" всегда есть
+    input = input.slice(1)
   }
 
   let formatted = '+7 '
@@ -37,6 +38,57 @@ const formatPhoneNumber = (event) => {
   if (input.length >= 9) formatted += `-${input.slice(8, 10)}`
 
   phoneNumber.value = formatted
+}
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+// регистрация
+const nameReg = ref('')
+const emailReg = ref('')
+const registerError = ref('')
+
+const handleRegister = async () => {
+  registerError.value = ''
+
+  if (!nameReg.value || !emailReg.value || !passwordReg.value) {
+    registerError.value = 'Пожалуйста, заполните все поля'
+    return
+  }
+
+  try {
+    await authStore.register({
+      email: emailReg.value,
+      password: passwordReg.value,
+      name: nameReg.value,
+    })
+    activeTab.value = 'login'
+  } catch (e) {
+    registerError.value = e.response?.data?.message || 'Ошибка регистрации'
+  }
+}
+
+// вход
+const emailLogin = ref('')
+const loginError = ref('')
+
+const handleLogin = async () => {
+  loginError.value = ''
+
+  if (!emailLogin.value || !password.value) {
+    loginError.value = 'Введите почту и пароль'
+    return
+  }
+
+  try {
+    await authStore.login({
+      email: emailLogin.value,
+      password: password.value,
+    })
+    router.push('/')
+  } catch (e) {
+    loginError.value = e.response?.data?.message || 'Ошибка входа'
+  }
 }
 </script>
 
@@ -88,9 +140,20 @@ const formatPhoneNumber = (event) => {
 
           <div class="w-[65%]">
             <div class="flex gap-3 w-full pb-5">
-              <input type="text" placeholder="Имя" class="w-1/2 p-3 border rounded-[18px]" />
-              <input type="text" placeholder="Фамилия" class="w-1/2 p-3 border rounded-[18px]" />
+              <input
+                v-model="nameReg"
+                type="text"
+                placeholder="Имя"
+                class="w-1/2 p-3 border rounded-[18px]"
+              />
+              <input
+                v-model="emailReg"
+                type="text"
+                placeholder="Почта"
+                class="w-1/2 p-3 border rounded-[18px]"
+              />
             </div>
+
             <input
               type="tel"
               v-model="phoneNumber"
@@ -121,10 +184,14 @@ const formatPhoneNumber = (event) => {
               </button>
             </div>
 
-            <div class="py-5 pb-15">
-              <button class="w-full py-3 bg-gray-300 text-gray-600 rounded-full cursor-not-allowed">
+            <div class="pb-8 text-center">
+              <button
+                @click="handleRegister"
+                class="w-full py-3 bg-black text-white rounded-full transition hover:opacity-80"
+              >
                 Зарегистрироваться
               </button>
+              <p class="text-red-500 text-sm pt-7" v-if="registerError">{{ registerError }}</p>
             </div>
           </div>
         </div>
@@ -132,6 +199,7 @@ const formatPhoneNumber = (event) => {
           <h2 class="text-center py-8 font-[Overpass_Medium] text-[20px]">Войти</h2>
           <div class="flex items-center justify-center w-full pb-5">
             <input
+              v-model="emailLogin"
               type="text"
               placeholder="Почта или номер телефона"
               class="w-[65%] p-3 border rounded-[18px]"
@@ -156,9 +224,15 @@ const formatPhoneNumber = (event) => {
               />
             </button>
           </div>
-          <div class="flex justify-center w-full pb-15">
-            <button class="w-[65%] py-3 bg-gray-300 text-gray-600 rounded-full">Войти</button>
+          <div class="flex justify-center w-full pb-8">
+            <button
+              @click="handleLogin"
+              class="w-[65%] py-3 bg-black text-white rounded-full transition hover:opacity-80"
+            >
+              Войти
+            </button>
           </div>
+          <p class="text-red-500 text-sm pb-7" v-if="loginError">{{ loginError }}</p>
         </div>
       </div>
     </div>
