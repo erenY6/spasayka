@@ -256,7 +256,7 @@ watch(activeTab, (newTab) => {
               v-if="useEmailAuth"
               v-model="emailLogin"
               type="text"
-              placeholder="Почта или номер телефона"
+              placeholder="Почта"
               class="w-[65%] p-3 border rounded-[18px]"
             />
             <input
