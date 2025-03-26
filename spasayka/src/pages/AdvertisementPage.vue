@@ -70,12 +70,13 @@ const conditionOptions = [
       <AdvertisementCard
         v-for="pet in pets"
         :key="pet.id"
+        :id="pet.id"
         :name="pet.name"
         :gender="pet.gender"
         :age="pet.age"
         :info1="pet.info1"
         :info2="pet.info2"
-        :image="'http://localhost:3000' + pet.image"
+        :image="pet.images?.[0] ? 'http://localhost:3000' + pet.images[0].url : ''"
         :description="pet.description"
       />
     </div>

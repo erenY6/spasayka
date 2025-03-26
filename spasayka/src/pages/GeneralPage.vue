@@ -79,14 +79,15 @@ const shelters = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
         <AdvertisementCard
-          v-for="pet in pets"
+          v-for="pet in pets.slice(0, 6)"
           :key="pet.id"
+          :id="pet.id"
           :name="pet.name"
           :gender="pet.gender"
           :age="pet.age"
           :info1="pet.info1"
           :info2="pet.info2"
-          :image="'http://localhost:3000' + pet.image"
+          :image="pet.images?.[0] ? 'http://localhost:3000' + pet.images[0].url : ''"
           :description="pet.description"
         />
       </div>

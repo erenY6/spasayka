@@ -4,6 +4,7 @@ import '../assets/main.css'
 import { ref } from 'vue'
 
 const props = defineProps({
+  id: String,
   name: String,
   gender: String,
   age: String,
@@ -62,11 +63,13 @@ const isFlipped = ref(false)
         </div>
 
         <div class="w-full flex justify-center">
-          <button
-            class="w-1/2 border-[2px] border-dashed border-[#5C432D] rounded-[10px] px-6 py-1 font-[Overpass_Medium] text-[16px]"
-          >
-            Узнать больше
-          </button>
+          <router-link :to="`/ad/${id}`" class="w-full flex justify-center">
+            <button
+              class="w-1/2 border-[2px] border-dashed border-[#5C432D] rounded-[10px] px-6 py-1 font-[Overpass_Medium] text-[16px]"
+            >
+              Узнать больше
+            </button>
+          </router-link>
         </div>
       </div>
     </div>

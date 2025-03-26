@@ -11,7 +11,7 @@ if (authStore.token) {
 </script>
 
 <template>
-  <div id="app" class="text-black min-h-screen flex flex-col bg-white">
+  <div id="app" class="text-black h-full flex flex-col bg-white">
     <MainHeader v-if="$route.path !== '/auth'" />
     <main class="flex-1 flex justify-center">
       <RouterView />
