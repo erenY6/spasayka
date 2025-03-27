@@ -12,6 +12,10 @@ const props = defineProps({
   info2: String,
   image: String,
   description: String,
+  withShadow: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const isFlipped = ref(false)
@@ -30,6 +34,7 @@ const isFlipped = ref(false)
     >
       <div
         class="absolute w-full h-full rounded-[20px] bg-[#F7E8DA] flex items-center gap-4 p-4 backface-hidden overflow-hidden"
+        :class="withShadow ? 'shadow-md ' : ''"
       >
         <img :src="image" alt="Животное" class="w-[150px] h-[150px] rounded-[12px] object-cover" />
         <div
@@ -51,6 +56,7 @@ const isFlipped = ref(false)
 
       <div
         class="w-full h-full rounded-[20px] bg-[#F7E8DA] p-4 flex flex-col justify-between rotate-y-180 backface-hidden relative overflow-hidden"
+        :class="withShadow ? 'shadow-md ' : ''"
       >
         <div
           class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#D9C7B3] rounded-bl-[50px] z-0"

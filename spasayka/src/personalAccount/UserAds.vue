@@ -36,7 +36,6 @@ watch(
     >
       <AdvertisementCard
         v-for="ad in myAds"
-        class="rounded-[20px] shadow-md hover:shadow-lg transition-shadow"
         :key="ad.id"
         :id="ad.id"
         :name="ad.name"
@@ -46,6 +45,7 @@ watch(
         :info2="ad.info2"
         :description="ad.description"
         :image="ad.images?.[0] ? 'http://localhost:3000' + ad.images[0].url : ''"
+        :withShadow="true"
       />
     </div>
   </div>
