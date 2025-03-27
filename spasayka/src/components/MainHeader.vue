@@ -30,18 +30,16 @@ const authStore = useAuthStore()
 
     <div v-if="authStore.user" class="flex items-center gap-4">
       <div class="flex items-center gap-2">
-        <span class="text-sm">Вы вошли как:</span>
-        <span v-if="authStore.user.name && authStore.user.surname" class="font-semibold">
-          {{ authStore.user.name }}
-          {{ authStore.user.surname }}
-        </span>
-        <span v-else-if="authStore.user.name" class="font-semibold">
-          {{ authStore.user.name }}
-        </span>
+        <!-- <span class="text-sm">Вы вошли как:</span> -->
+        <router-link to="/cabinet" class="font-semibold hover:underline">
+          <span v-if="authStore.user.name && authStore.user.surname">
+            {{ authStore.user.name }} {{ authStore.user.surname }}
+          </span>
+          <span v-else-if="authStore.user.name">
+            {{ authStore.user.name }}
+          </span>
+        </router-link>
       </div>
-      <button @click="authStore.logout()" class="text-sm text-red-500 hover:underline transition">
-        Выйти
-      </button>
     </div>
 
     <router-link

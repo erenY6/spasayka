@@ -22,6 +22,12 @@ export async function fetchAds() {
   return response.data
 }
 
+// Получение объявлений по автору
+export async function fetchAdsByAuthor(authorId) {
+  const response = await api.get(`/animal-ad/by-author/${authorId}`)
+  return response.data
+}
+
 // Регистрация пользователя
 export async function registerUser({ name, surname, email, phone, password }) {
   const response = await api.post('/auth/register', {

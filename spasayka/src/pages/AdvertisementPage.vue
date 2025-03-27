@@ -15,7 +15,6 @@ const adsStore = useAdsStore()
 
 onMounted(async () => {
   await adsStore.loadAds()
-  console.log(adsStore.ads)
 })
 
 const pets = ref([adsStore.ads])

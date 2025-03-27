@@ -4,6 +4,10 @@ import AboutPage from '../pages/AboutPage.vue'
 import AdvertisementPage from '../pages/AdvertisementPage.vue'
 import SheltersPage from '../pages/SheltersPage.vue'
 import AuthPage from '../pages/AuthPage.vue'
+import UserCabinet from '@/pages/UserCabinet.vue'
+import UserProfile from '@/personalAccount/UserProfile.vue'
+import UserChats from '@/personalAccount/UserChats.vue'
+import UserAds from '@/personalAccount/UserAds.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +41,16 @@ const router = createRouter({
       path: '/ad/:id',
       name: 'IndividualAd',
       component: () => import('@/pages/IndividualAdPage.vue'),
+    },
+    {
+      path: '/cabinet',
+      component: UserCabinet,
+      children: [
+        { path: 'profile', name: 'CabinetProfile', component: UserProfile },
+        { path: 'chats', component: UserChats },
+        { path: 'my-ads', component: UserAds },
+        { path: '', redirect: { name: 'CabinetProfile' } },
+      ],
     },
   ],
   scrollBehavior() {
