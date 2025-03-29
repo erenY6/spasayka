@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { registerUser, loginUser, fetchCurrentUser } from '@/data/api'
+import { registerUser, loginUser, fetchCurrentUser, updateUserProfile } from '@/data/api'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -31,11 +31,24 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    setUser(user) {
+      this.user = user
+    },
+
     // Выход
     logout() {
       this.token = ''
       this.user = null
       localStorage.removeItem('token')
+    },
+
+    async updateUserData(newData) {
+      try {
+        const updated = await updateUserProfile(newData)
+        this.user = updated
+      } catch (e) {
+        console.error('Ошибка при обновлении данных пользователя:', e)
+      }
     },
   },
 })

@@ -1,7 +1,17 @@
 <script setup>
 import { useAuthStore } from '@/stores/authStore'
+import { ref, watchEffect } from 'vue'
 
 const authStore = useAuthStore()
+const avatar = ref('')
+
+watchEffect(() => {
+  if (authStore.user?.avatar) {
+    avatar.value = `http://localhost:3000/images/${authStore.user.avatar}`
+  } else {
+    avatar.value = 'https://i.pravatar.cc/100?img=5'
+  }
+})
 </script>
 
 <template>
@@ -28,7 +38,7 @@ const authStore = useAuthStore()
       </nav>
     </div>
 
-    <div v-if="authStore.user" class="flex items-center gap-4">
+    <div v-if="authStore.user" class="flex flex-row items-center gap-4">
       <div class="flex items-center gap-2">
         <!-- <span class="text-sm">Вы вошли как:</span> -->
         <router-link to="/cabinet" class="font-semibold hover:underline">
@@ -40,6 +50,7 @@ const authStore = useAuthStore()
           </span>
         </router-link>
       </div>
+      <img :src="avatar" class="w-10 h-10 rounded-full object-cover" />
     </div>
 
     <router-link

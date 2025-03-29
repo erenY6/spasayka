@@ -1,7 +1,8 @@
 <!-- eslint-disable no-unused-vars -->
 <script setup>
 import '../assets/main.css'
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import settingsWindow from '@/assets/allPictures/settingsWindow.svg'
 
 const props = defineProps({
   id: String,
@@ -19,6 +20,27 @@ const props = defineProps({
 })
 
 const isFlipped = ref(false)
+const isMenuOpen = ref(false)
+const menuRef = ref(null)
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+// Закрытие при клике вне меню
+const handleClickOutside = (event) => {
+  if (menuRef.value && !menuRef.value.contains(event.target)) {
+    isMenuOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
@@ -38,7 +60,7 @@ const isFlipped = ref(false)
       >
         <img :src="image" alt="Животное" class="w-[150px] h-[150px] rounded-[12px] object-cover" />
         <div
-          class="absolute right-0 top-0 bg-[#D9C7B3] rounded-bl-[50px] px-3 pt-3 pb-6 min-w-[120px] text-right"
+          class="absolute right-0 top-0 bg-[#DFC5AD] rounded-bl-[40px] px-3 pt-3 pb-6 min-w-[120px] text-right"
         >
           <p class="font-[Overpass_Black] leading-tight">{{ name }}</p>
           <p class="font-[Overpass_Regular] -mt-1">{{ gender }}</p>
@@ -52,6 +74,27 @@ const isFlipped = ref(false)
             <p class="font-[Overpass_Medium] border-t border-[#AFA393] pt-1">{{ info2 }}</p>
           </div>
         </div>
+        <div v-if="withShadow" class="absolute bottom-3 right-3 z-20">
+          <img :src="settingsWindow" class="w-5 h-5 cursor-pointer" @click.stop="toggleMenu" />
+
+          <div
+            v-if="isMenuOpen"
+            ref="menuRef"
+            class="absolute bottom-5 right-2 rounded-[20px] w-[160px] overflow-hidden text-black shadow-md font-[Overpass_Medium] text-[15px]"
+          >
+            <button
+              class="w-full py-2 px-4 bg-[#DFC5AD] hover:bg-[#E1BB98] transition-colors duration-200"
+            >
+              Редактировать
+            </button>
+            <hr class="border-t border-[#B3773F]" />
+            <button
+              class="w-full py-2 px-4 bg-[#DFC5AD] hover:bg-[#E1BB98] transition-colors duration-200 text-red-700"
+            >
+              Удалить
+            </button>
+          </div>
+        </div>
       </div>
 
       <div
@@ -59,7 +102,7 @@ const isFlipped = ref(false)
         :class="withShadow ? 'shadow-md ' : ''"
       >
         <div
-          class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#D9C7B3] rounded-bl-[50px] z-0"
+          class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#DFC5AD] rounded-bl-[50px] z-0"
         ></div>
 
         <div class="relative z-10 space-y-4 px-8">
@@ -69,9 +112,9 @@ const isFlipped = ref(false)
         </div>
 
         <div class="w-full flex justify-center">
-          <router-link :to="`/ad/${id}`" class="w-full flex justify-center">
+          <router-link :to="`/ad/${id}`" class="w-1/2 flex justify-center">
             <button
-              class="w-1/2 border-[2px] border-dashed border-[#5C432D] rounded-[10px] px-6 py-1 font-[Overpass_Medium] text-[16px]"
+              class="w-full border-[2px] border-dashed border-[#5C432D] rounded-[10px] px-6 py-1 font-[Overpass_Medium] text-[16px]"
             >
               Узнать больше
             </button>

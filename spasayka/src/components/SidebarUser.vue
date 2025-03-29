@@ -1,14 +1,25 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { ref, watchEffect } from 'vue'
 import chatIcon from '@/assets/allPictures/chatIcon.svg'
 import adsIcon from '@/assets/allPictures/adsIcon.svg'
 import settingsIcon from '@/assets/allPictures/settingsIcon.svg'
 import loginoutIcon from '@/assets/allPictures/loginoutIcon.svg'
-import profilePicture from '@/assets/allPictures/profilePicture.png'
+
 import { useAuthStore } from '@/stores/authStore'
 
 const authStore = useAuthStore()
 const router = useRouter()
+
+const avatar = ref('')
+
+watchEffect(() => {
+  if (authStore.user?.avatar) {
+    avatar.value = `http://localhost:3000/images/${authStore.user.avatar}`
+  } else {
+    avatar.value = 'https://i.pravatar.cc/100?img=5'
+  }
+})
 
 const handleLogout = () => {
   authStore.logout()
@@ -19,7 +30,7 @@ const handleLogout = () => {
 <template>
   <div class="w-17 bg-[#CEBBAA] flex flex-col items-center py-4 h-[calc(100vh-65px)]">
     <div class="flex flex-col items-center gap-5 flex-1">
-      <img :src="profilePicture" class="w-10 h-10" />
+      <img :src="avatar" class="w-10 h-10 rounded-full object-cover" />
       <router-link to="/cabinet/chats">
         <img
           :src="chatIcon"

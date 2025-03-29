@@ -43,3 +43,8 @@
   font-family: 'Overpass Italic';
   src: url('./fonts/static/Overpass-Italic.ttf');
 }
+
+@font-face {
+  font-family: 'Overpass Bold';
+  src: url('./fonts/static/Overpass-Bold.ttf');
+}

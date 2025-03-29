@@ -54,3 +54,15 @@ export async function fetchCurrentUser() {
   const response = await api.get('/auth/me')
   return response.data
 }
+
+//  Новый метод обновления пользователя
+export async function updateUserProfile(formData) {
+  const response = await api.put('/auth/update', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  return response.data
+}
+
+export default api
