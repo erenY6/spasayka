@@ -16,7 +16,7 @@ watchEffect(() => {
 
 <template>
   <header
-    class="sticky top-0 left-0 w-full z-50 bg-white border-b border-black px-12 py-3 flex items-center text-[17px] font-[Signate_Grotesk]"
+    class="sticky top-0 left-0 w-full z-50 bg-white border-b border-black px-12 py-2 flex items-center text-[17px] font-[Signate_Grotesk]"
   >
     <div class="flex items-center gap-8 flex-1">
       <router-link

@@ -1,7 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
+
+import { startDialogueWithUser } from '@/data/api'
+import { useAuthStore } from '@/stores/authStore'
 
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
@@ -14,10 +17,24 @@ import chat from '@/assets/allPictures/chat.svg'
 import checkMark from '@/assets/allPictures/checkMark.svg'
 
 const route = useRoute()
+const router = useRouter()
 const ad = ref(null)
 const carouselConfig = {
   itemsToShow: 1,
   wrapAround: true,
+}
+
+const authStore = useAuthStore()
+
+const openChat = async () => {
+  if (!authStore.user) return
+
+  try {
+    await startDialogueWithUser(ad.value.authorId, authStore.user.id)
+    router.push(`/cabinet/chats`)
+  } catch (err) {
+    console.error('Ошибка при открытии чата:', err)
+  }
 }
 
 onMounted(async () => {
@@ -63,7 +80,10 @@ onMounted(async () => {
 
           <div class="flex gap-2 items-center pl-10 pb-4">
             <img :src="chat" alt="Чат" class="w-[35px] h-[35px]" />
-            <a href="#" class="text-[#273275] underline font-[Overpass_Regular] text-[16px]"
+            <a
+              href="#"
+              @click="openChat"
+              class="text-[#273275] underline font-[Overpass_Regular] text-[16px]"
               >перейти к чату</a
             >
           </div>

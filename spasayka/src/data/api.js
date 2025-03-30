@@ -65,4 +65,19 @@ export async function updateUserProfile(formData) {
   return response.data
 }
 
+export async function fetchMessagesForDialogue(dialogueId) {
+  const res = await api.get(`/dialogues/${dialogueId}/messages`)
+  return res.data
+}
+
+export async function sendMessageToDialogue(dialogueId, content) {
+  const res = await api.post(`/dialogues/${dialogueId}/messages`, { content })
+  return res.data
+}
+
+export async function startDialogueWithUser(user1Id, user2Id) {
+  const res = await api.post('/dialogue/create', { user1Id, user2Id })
+  return res.data
+}
+
 export default api
