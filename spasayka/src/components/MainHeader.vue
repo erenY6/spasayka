@@ -6,10 +6,15 @@ const authStore = useAuthStore()
 const avatar = ref('')
 
 watchEffect(() => {
-  if (authStore.user?.avatar) {
-    avatar.value = `http://localhost:3000/images/${authStore.user.avatar}`
+  const user = authStore.user
+  if (user?.avatar) {
+    avatar.value = `http://localhost:3000/images/${user.avatar}`
+  } else if (user?.name || user?.surname) {
+    avatar.value = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      `${user.name || ''} ${user.surname || ''}`,
+    )}&background=F3E6DA&color=000&rounded=true`
   } else {
-    avatar.value = 'https://i.pravatar.cc/100?img=5'
+    avatar.value = ''
   }
 })
 </script>

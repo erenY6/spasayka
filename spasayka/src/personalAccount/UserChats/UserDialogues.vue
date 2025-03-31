@@ -1,3 +1,4 @@
+<!-- eslint-disable no-unused-vars -->
 <script setup>
 import { onMounted, onBeforeUnmount, ref, defineEmits } from 'vue'
 import IndividualDialogue from './IndividualDialogue.vue'
@@ -6,30 +7,39 @@ import socket from '@/socket'
 
 const emit = defineEmits(['open-dialogue'])
 
+const props = defineProps({
+  activeDialogueId: String,
+})
+
 const dialogues = ref([])
 const authStore = useAuthStore()
 
 onMounted(() => {
   socket.connect()
 
-  // Получить начальные диалоги (если сервер такое шлёт)
   socket.emit('getUserDialogues', { userId: authStore.user.id })
 
-  // Пришёл список диалогов
   socket.on('dialoguesList', (data) => {
-    console.log('Получены диалоги:', data)
-    dialogues.value = data
+    dialogues.value = data.map((dialogue) => {
+      const lastMsg = dialogue.messages?.[0]
+      return {
+        ...dialogue,
+        lastMessage: lastMsg?.content || '',
+        lastMessageSenderId: lastMsg?.senderId || '',
+        time: lastMsg?.createdAt || '',
+      }
+    })
   })
 
-  // Пришло новое сообщение — можно обновить последний месседж
   socket.on('newMessage', (message) => {
     const index = dialogues.value.findIndex((d) => d.id === message.dialogueId)
     if (index !== -1) {
       dialogues.value[index].lastMessage = message.content
+      dialogues.value[index].lastMessageSenderId = message.senderId
       dialogues.value[index].time = new Date().toLocaleTimeString()
       dialogues.value[index].unread += 1
     } else {
-      // опционально: создать новый диалог
+      //
     }
   })
 })
@@ -45,6 +55,7 @@ onBeforeUnmount(() => {
       v-for="dialogue in dialogues"
       :key="dialogue.id"
       :dialogue="dialogue"
+      :activeDialogueId="props.activeDialogueId"
       @click="emit('open-dialogue', dialogue.id)"
     />
   </div>

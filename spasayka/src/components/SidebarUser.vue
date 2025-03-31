@@ -17,13 +17,15 @@ watchEffect(() => {
   if (authStore.user?.avatar) {
     avatar.value = `http://localhost:3000/images/${authStore.user.avatar}`
   } else {
-    avatar.value = 'https://i.pravatar.cc/100?img=5'
+    avatar.value = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      authStore.user.name + ' ' + authStore.user.surname,
+    )}&background=F3E6DA&color=000&rounded=true`
   }
 })
 
 const handleLogout = () => {
   authStore.logout()
-  router.push('/') // переход на главную
+  router.push('/')
 }
 </script>
 

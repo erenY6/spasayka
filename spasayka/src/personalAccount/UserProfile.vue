@@ -12,9 +12,8 @@ const email = ref('')
 const phone = ref('')
 const avatar = ref('')
 const avatarFile = ref(null)
-const errorMessage = ref('') // для отображения ошибок
+const errorMessage = ref('')
 
-// Подгружаем данные из authStore
 watchEffect(() => {
   name.value = authStore.user?.name || ''
   surname.value = authStore.user?.surname || ''
@@ -22,10 +21,11 @@ watchEffect(() => {
   phone.value = authStore.user?.phone || ''
   avatar.value = authStore.user?.avatar
     ? `http://localhost:3000/images/${authStore.user.avatar}`
-    : ''
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        authStore.user.name + ' ' + authStore.user.surname,
+      )}&background=F3E6DA&color=000&rounded=true`
 })
 
-// Обработка загрузки аватара
 const handleAvatarUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
@@ -38,7 +38,6 @@ const handleAvatarUpload = (event) => {
   }
 }
 
-// Маска для телефона
 const formatPhoneNumber = (event) => {
   let input = event.target.value.replace(/\D/g, '')
   if (input.startsWith('7')) input = input.slice(1)
@@ -53,7 +52,6 @@ const formatPhoneNumber = (event) => {
   event.target.value = formatted
 }
 
-// Сохранение профиля
 const saveProfile = async () => {
   errorMessage.value = ''
   const rawPhone = phone.value.replace(/\D/g, '')
@@ -87,7 +85,6 @@ const saveProfile = async () => {
     <div class="font-[Signate_Grotesk] text-[20px] pb-10">Настройки</div>
 
     <div class="bg-[#E1D1C3] rounded-[20px] w-[500px] overflow-hidden shadow-md">
-      <!-- Аватар и имя -->
       <div class="bg-[#CEBBAA] flex flex-row items-center p-4">
         <div class="relative">
           <img
@@ -108,7 +105,6 @@ const saveProfile = async () => {
         </div>
       </div>
 
-      <!-- Поля ввода -->
       <div class="px-6 py-6 space-y-5 text-[15px] font-[Overpass_Regular]">
         <div class="flex justify-between items-center border-b border-black py-2">
           <label class="font-[Overpass_Bold] w-[100px]">Имя</label>

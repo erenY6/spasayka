@@ -5,6 +5,7 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token') || '',
     user: null,
+    isUserLoaded: false,
   }),
 
   actions: {
@@ -28,6 +29,8 @@ export const useAuthStore = defineStore('auth', {
       } catch (e) {
         console.error('Ошибка при получении пользователя:', e)
         this.logout()
+      } finally {
+        this.isUserLoaded = true
       }
     },
 
@@ -39,6 +42,7 @@ export const useAuthStore = defineStore('auth', {
     logout() {
       this.token = ''
       this.user = null
+      this.isUserLoaded = true
       localStorage.removeItem('token')
     },
 

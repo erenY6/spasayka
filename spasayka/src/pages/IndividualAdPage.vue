@@ -47,7 +47,6 @@ onMounted(async () => {
 <template>
   <div v-if="ad" class="flex flex-col w-full h-[100vh] px-12 py-6">
     <section class="flex flex-col lg:flex-row gap-10 max-w-[1400px] pb-6">
-      <!-- Sticker with info -->
       <div class="w-2/3">
         <div
           class="relative bg-no-repeat bg-contain bg-left-top w-full min-h-[450px]"
@@ -102,7 +101,6 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- Карусель -->
       <div class="w-full">
         <Carousel v-bind="carouselConfig">
           <Slide v-for="img in ad.images" :key="img.id">
@@ -121,7 +119,6 @@ onMounted(async () => {
       </div>
     </section>
 
-    <!-- Полное описание -->
     <div class="w-full h-full rounded-[20px] bg-[#E9DACE] items-center flex">
       <div class="space-y-4 leading-relaxed text-justify font-[Overpass_Italic] text-[18px] p-10">
         <p v-html="ad.fullDesc"></p>
