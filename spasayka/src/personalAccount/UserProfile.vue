@@ -137,14 +137,14 @@ const saveProfile = async () => {
         </div>
       </div>
 
-      <div class="w-full flex justify-center pb-6">
+      <div class="w-full flex flex-col justify-center items-center pb-6">
         <button
           @click="saveProfile"
-          class="bg-[#D2BAA5] hover:bg-[#c4aa95] transition px-6 py-2 rounded-full font-[Overpass_SemiBold]"
+          class="bg-[#D2BAA5] hover:bg-[#c4aa95] transition px-6 py-2 w-[30%] rounded-full font-[Overpass_SemiBold]"
         >
           Сохранить
         </button>
-        <p v-if="errorMessage" class="text-red-600 text-sm text-center pb-3">
+        <p v-if="errorMessage" class="text-red-600 text-sm text-center py-3">
           {{ errorMessage }}
         </p>
       </div>

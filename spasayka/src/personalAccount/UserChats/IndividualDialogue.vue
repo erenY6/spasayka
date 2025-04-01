@@ -3,7 +3,6 @@ import { computed, watch, ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import readed from '@/assets/allPictures/readed.svg'
 import unreaded from '@/assets/allPictures/unreaded.svg'
-import socket from '@/socket'
 
 const props = defineProps({ dialogue: Object, activeDialogueId: String })
 const authStore = useAuthStore()

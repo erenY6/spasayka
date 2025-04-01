@@ -4,6 +4,9 @@ import { useAuthStore } from '@/stores/authStore'
 import socket from '@/socket.js'
 import sendMessage from '@/assets/allPictures/sendMessage.svg'
 
+import readed from '@/assets/allPictures/readed.svg'
+import unreaded from '@/assets/allPictures/unreaded.svg'
+
 const props = defineProps({ dialogueId: String })
 const authStore = useAuthStore()
 
@@ -44,9 +47,19 @@ const loadMessages = () => {
         dialogueId: props.dialogueId,
         readerId: authStore.user.id,
       })
+      socket.emit('getMessages', { dialogueId: props.dialogueId })
+      loadMessages()
       scrollToBottom()
     }
   })
+}
+
+function checkStatusMsg(isRead) {
+  if (isRead) {
+    return readed
+  } else {
+    return unreaded
+  }
 }
 
 const fetchDialogueInfo = () => {
@@ -93,6 +106,11 @@ watch(
   { immediate: true },
 )
 
+function formatTime(dateStr) {
+  const date = new Date(dateStr)
+  return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+}
+
 onBeforeUnmount(() => {
   socket.off('messagesList')
   socket.off('newMessage')
@@ -111,11 +129,21 @@ onBeforeUnmount(() => {
         v-for="msg in messages"
         :key="msg.id"
         :class="[
-          'max-w-[60%] px-4 py-2 rounded-lg',
-          msg.senderId === authStore.user?.id ? 'self-end bg-[#DFD2C8]' : 'self-start bg-white',
+          'max-w-[60%] px-4 pt-4 pb-2 rounded-lg font-[Overpass_Regular]',
+          msg.senderId === authStore.user?.id
+            ? 'self-end bg-[#ADA096] rounded-br-[0px]'
+            : 'self-start bg-[#FBEFE7] rounded-bl-[0px]',
         ]"
       >
         {{ msg.content }}
+        <div class="text-[14px] flex flex-row justify-end items-center gap-1 text-[#666666]">
+          <img
+            v-if="msg.senderId == authStore.user.id"
+            :src="checkStatusMsg(msg.isRead)"
+            class="w-[15px] h-[15px]"
+          />
+          {{ formatTime(msg.createdAt) }}
+        </div>
       </div>
     </div>
 
