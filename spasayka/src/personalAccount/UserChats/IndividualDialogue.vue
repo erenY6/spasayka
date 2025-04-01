@@ -1,6 +1,9 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, watch, ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import readed from '@/assets/allPictures/readed.svg'
+import unreaded from '@/assets/allPictures/unreaded.svg'
+import socket from '@/socket'
 
 const props = defineProps({ dialogue: Object, activeDialogueId: String })
 const authStore = useAuthStore()
@@ -41,6 +44,35 @@ const previewMessage = computed(() => {
   return prefix + props.dialogue.lastMessage
 })
 const isActive = computed(() => props.dialogue.id === props.activeDialogueId)
+
+const previewRead = computed(() => {
+  if (props.dialogue.lastMessageSenderId === authStore.user.id) {
+    return true
+  }
+  return false
+})
+
+const imgState = ref('')
+
+onMounted(() => {
+  if (props.dialogue.isRead) {
+    imgState.value = readed
+  } else {
+    imgState.value = unreaded
+  }
+})
+
+watch(
+  () => props.dialogue.isRead,
+  (newIsRead) => {
+    if (newIsRead) {
+      imgState.value = readed
+    } else {
+      imgState.value = unreaded
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -66,10 +98,13 @@ const isActive = computed(() => props.dialogue.id === props.activeDialogueId)
           {{ previewMessage }}
         </p>
         <span
-          v-if="dialogue.unread"
+          v-if="dialogue.unreadCount"
           class="ml-2 bg-[#B49C87] text-white text-xs px-2 py-[1px] rounded-full"
         >
-          {{ dialogue.unread }}
+          {{ dialogue.unreadCount }}
+        </span>
+        <span v-if="previewRead" class=" ">
+          <img :src="imgState" class="w-4 h-4" />
         </span>
       </div>
     </div>

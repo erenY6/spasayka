@@ -15,10 +15,6 @@ const handleKeyDown = (event) => {
 onMounted(() => {
   socket.connect()
   window.addEventListener('keydown', handleKeyDown)
-
-  socket.on('newMessage', (message) => {
-    console.log('Новое сообщение:', message)
-  })
 })
 
 onBeforeUnmount(() => {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onBeforeUnmount, nextTick, computed } from 'vue'
+import { ref, watch, onBeforeUnmount, nextTick, computed, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import socket from '@/socket.js'
 import sendMessage from '@/assets/allPictures/sendMessage.svg'
@@ -18,6 +18,13 @@ const scrollToBottom = () => {
   })
 }
 
+onMounted(() => {
+  socket.emit('mark_read', {
+    dialogueId: props.dialogueId,
+    readerId: authStore.user.id,
+  })
+})
+
 const loadMessages = () => {
   socket.off('messagesList')
   socket.off('newMessage')
@@ -33,6 +40,10 @@ const loadMessages = () => {
     if (msg.dialogueId === props.dialogueId) {
       messages.value.push(msg)
       loadMessages()
+      socket.emit('mark_read', {
+        dialogueId: props.dialogueId,
+        readerId: authStore.user.id,
+      })
       scrollToBottom()
     }
   })
@@ -41,6 +52,7 @@ const loadMessages = () => {
 const fetchDialogueInfo = () => {
   socket.emit('getUserDialogues', { userId: authStore.user.id })
   socket.once('dialoguesList', (data) => {
+    scrollToBottom()
     dialogue.value = data.find((d) => d.id === props.dialogueId) || null
   })
 }
@@ -73,8 +85,8 @@ watch(
   () => props.dialogueId,
   (newId) => {
     if (newId) {
-      loadMessages()
       fetchDialogueInfo()
+      loadMessages()
       scrollToBottom()
     }
   },
@@ -91,7 +103,7 @@ onBeforeUnmount(() => {
   <div class="flex flex-col h-full bg-[#CEBBAA]">
     <div class="flex items-center gap-4 border-l border-[#CEBBAA] px-6 py-2 bg-[#DFD2C8]">
       <img :src="avatarUrl" class="w-9 h-9 rounded-full object-cover" />
-      <p class="font-[Overpass_Bold] text-[15px]">{{ companion.name }} {{ companion.surname }}</p>
+      <p class="font-[Overpass_Bold] text-[15px]">{{ companion?.name }} {{ companion?.surname }}</p>
     </div>
 
     <div class="flex-1 p-4 overflow-y-auto flex flex-col gap-4 scroll-container">
