@@ -39,7 +39,7 @@ watchEffect(() => {
         <router-link to="/ads">Объявления</router-link>
         <router-link to="/shelters">Приюты</router-link>
         <router-link to="/map">Карта</router-link>
-        <router-link to="/createAds">Создать объявление</router-link>
+        <router-link to="/createAd">Создать объявление</router-link>
       </nav>
     </div>
 

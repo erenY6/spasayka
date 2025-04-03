@@ -8,6 +8,7 @@ import UserCabinet from '@/pages/UserCabinet.vue'
 import UserProfile from '@/personalAccount/UserProfile.vue'
 import UserChats from '@/personalAccount/UserChats.vue'
 import UserAds from '@/personalAccount/UserAds.vue'
+import CreateAdPage from '@/pages/CreateAdPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/auth',
       name: 'auth',
       component: AuthPage,
+    },
+    {
+      path: '/createAd',
+      name: 'createAd',
+      component: CreateAdPage,
     },
     {
       path: '/ad/:id',
