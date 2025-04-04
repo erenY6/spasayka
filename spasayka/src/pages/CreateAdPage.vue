@@ -6,6 +6,10 @@ import BasicInformation from './createAd/BasicInformation.vue'
 import AnimalStatus from './createAd/AnimalStatus.vue'
 import PersonalDataView from './createAd/PersonalDataView.vue'
 
+import circle from '@/assets/allPictures/circle.svg'
+import circleMark from '@/assets/allPictures/circleMark.svg'
+import YandexMapCreate from './createAd/YandexMapCreate.vue'
+
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -53,6 +57,12 @@ const autoResize = () => {
 
 const removeImage = (index) => {
   images.value.splice(index, 1)
+}
+
+const showOnMap = ref(true)
+
+const toggleMapVisibility = () => {
+  showOnMap.value = !showOnMap.value
 }
 
 watch(
@@ -115,7 +125,15 @@ watch(
         </button>
 
         <div class="w-full h-full flex items-center pt-6">
-          <div class="flex p-5 flex-wrap gap-4 bg-[#CEBBAA] rounded-[20px]">
+          <div class="flex p-5 flex-wrap gap-4 bg-[#CEBBAA] min-h-[160px] w-full rounded-[20px]">
+            <div
+              v-if="images.length === 0"
+              class="w-full flex items-center justify-center pointer-events-none rounded-[8px] border-2 border-dashed border-[#55463A]"
+            >
+              <p class="text-[#4e4136] font-[Overpass_SemiBold] text-[16px] text-center">
+                Загрузите фотографии животного
+              </p>
+            </div>
             <div
               v-for="(img, index) in images"
               :key="index"
@@ -132,6 +150,16 @@ watch(
           </div>
         </div>
       </div>
+
+      <div class="flex flex-col pb-3">
+        <h2 class="pb-3 font-[Signate_Grotesk] text-[20px]">Местоположение</h2>
+        <div class="flex items-center gap-2 cursor-pointer py-2" @click="toggleMapVisibility">
+          <img :src="showOnMap ? circleMark : circle" class="w-6 h-6" alt="toggle" />
+          <span class="font-[Overpass_SemiBold] text-[15px]">Показывать на карте</span>
+        </div>
+      </div>
+
+      <YandexMapCreate ref="mapComponent" v-show="showOnMap" />
     </div>
   </div>
 </template>
