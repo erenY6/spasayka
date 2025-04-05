@@ -2,6 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
+import { uploadAnimalAd } from '@/data/api'
 import BasicInformation from './createAd/BasicInformation.vue'
 import AnimalStatus from './createAd/AnimalStatus.vue'
 import PersonalDataView from './createAd/PersonalDataView.vue'
@@ -12,6 +13,8 @@ import YandexMapCreate from './createAd/YandexMapCreate.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const basicInfoComponent = ref(null)
+const mapComponent = ref(null)
 
 onMounted(() => {
   if (!authStore.user || !authStore.user.id) {
@@ -73,6 +76,35 @@ watch(
   },
   { deep: true },
 )
+
+const handleSubmit = async () => {
+  const formData = new FormData()
+
+  formData.append('name', basicInfoComponent.value.name)
+  formData.append('gender', basicInfoComponent.value.gender)
+  formData.append('age', basicInfoComponent.value.age)
+  formData.append('info1', basicInfoComponent.value.animalType)
+  formData.append('info2', basicInfoComponent.value.height)
+  formData.append('address', mapComponent.value.address)
+  formData.append('coordinates', mapComponent.value.coordinates)
+  formData.append('description', description.value)
+  formData.append('fullDesc', description.value)
+  formData.append('authorId', authStore.user.id)
+
+  statusList.value.forEach((tag) => formData.append('tags', tag))
+
+  images.value.forEach((image) => {
+    formData.append('images', image.file)
+  })
+
+  try {
+    await uploadAnimalAd(formData)
+    router.push('/cabinet/my-ads')
+  } catch (e) {
+    console.error(e)
+    alert('Ошибка при создании объявления')
+  }
+}
 </script>
 <template>
   <div class="w-full h-full flex flex-col bg-[#DFD2C8] px-12 py-4">
@@ -81,7 +113,7 @@ watch(
       <div class="w-full flex flex-row justify-between">
         <div class="w-auto h-full flex flex-col">
           <h2 class="pb-3 font-[Signate_Grotesk] text-[20px]">Основная информация о животном</h2>
-          <BasicInformation></BasicInformation>
+          <BasicInformation ref="basicInfoComponent"></BasicInformation>
         </div>
         <div class="w-auto h-full flex flex-col">
           <h2 class="pb-3 font-[Signate_Grotesk] text-[20px]">Статус животного</h2>
@@ -160,6 +192,15 @@ watch(
       </div>
 
       <YandexMapCreate ref="mapComponent" v-show="showOnMap" />
+
+      <div class="w-full flex justify-center items-center pt-6">
+        <button
+          @click="handleSubmit"
+          class="bg-[#D2BAA5] hover:bg-[#c4aa95] transition px-6 py-2 w-auto rounded-full font-[Overpass_SemiBold]"
+        >
+          Сохранить объявление
+        </button>
+      </div>
     </div>
   </div>
 </template>

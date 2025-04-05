@@ -80,4 +80,18 @@ export async function startDialogueWithUser(user1Id, user2Id) {
   return res.data
 }
 
+export async function uploadAnimalAd(formData) {
+  const response = await api.post('/animal-ad/upload', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  return response.data
+}
+
+export async function deleteAdById(adsId) {
+  const res = await api.delete(`/animal-ad/${adsId}`)
+  return res.data
+}
+
 export default api

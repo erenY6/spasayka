@@ -30,7 +30,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <div class="w-17 bg-[#CEBBAA] flex flex-col items-center py-4 h-[calc(100vh-57px)]">
+  <div class="w-17 sticky bg-[#CEBBAA] flex flex-col items-center py-4 h-[calc(100vh-57px)]">
     <div class="flex flex-col items-center gap-5 flex-1">
       <img :src="avatar" class="w-10 h-10 rounded-full object-cover" />
       <router-link to="/cabinet/chats">

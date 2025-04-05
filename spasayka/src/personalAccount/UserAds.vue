@@ -1,5 +1,5 @@
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, ref } from 'vue'
 import { useAdsStore } from '@/stores/adsStore'
 import { useAuthStore } from '@/stores/authStore'
 import AdvertisementCard from '@/components/AdvertisementCard.vue'
@@ -18,8 +18,28 @@ watch(
       console.log(adsStore.loadAdsByUser(user.id))
     }
   },
-  { immediate: true }, // запуск сразу если user уже есть
+  { immediate: true },
 )
+
+watch(
+  () => adsStore.ads,
+  () => {
+    adsStore.loadAdsByUser(authStore.user.id)
+  },
+  { immediate: true },
+)
+const currentPage = ref(1)
+const itemsPerPage = 6
+
+const paginatedPets = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return myAds.value.slice(start, end)
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(myAds.value.length / itemsPerPage)
+})
 </script>
 
 <template>
@@ -32,10 +52,10 @@ watch(
       </div>
     </div>
     <div
-      class="w-full h-full pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center"
+      class="w-full pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center"
     >
       <AdvertisementCard
-        v-for="ad in myAds"
+        v-for="ad in paginatedPets"
         :key="ad.id"
         :id="ad.id"
         :name="ad.name"
@@ -47,6 +67,21 @@ watch(
         :image="ad.images?.[0] ? 'http://localhost:3000' + ad.images[0].url : ''"
         :withShadow="true"
       />
+    </div>
+    <div v-if="myAds.length > 6" class="flex justify-center pt-6 gap-2">
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        @click="currentPage = page"
+        :class="[
+          'px-4 py-2 rounded-[5px] bg-[#D2BAA5] hover:bg-[#c4aa95] cursor-pointer',
+          currentPage === page
+            ? 'bg-[#CEBBAA] font-[Overpass_Bold]'
+            : 'bg-[#f2e9e1] hover:bg-[#c4aa95] font-[Overpass_Medium]',
+        ]"
+      >
+        {{ page }}
+      </button>
     </div>
   </div>
 </template>

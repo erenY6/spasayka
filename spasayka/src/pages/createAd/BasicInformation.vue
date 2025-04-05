@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import BaseSelect from '@/components/BaseSelect.vue'
 import selectorBgCreate from '@/assets/allPictures/selectorBgCreate.svg'
 import minInputBg from '@/assets/allPictures/minInputBg.svg'
@@ -9,6 +10,16 @@ const animalType = ref('Любой')
 const gender = ref('Любой')
 const age = ref('Любой')
 const height = ref('Любая')
+const name = ref('')
+const ageValue = ref('')
+
+defineExpose({
+  name,
+  age: computed(() => `${ageValue.value} ${age.value}`),
+  gender,
+  animalType,
+  height,
+})
 
 const animalOptions = [
   { label: 'Любой', value: 'Любой' },
@@ -44,7 +55,7 @@ const heightOptions = [
       <div class="w-full h-full">
         <div class="font-[Overpass_SemiBold] text-[17px]">Имя животного</div>
         <div class="relative flex items-center w-full h-[55px] font-[Overpass_regular] text-[16px]">
-          <input class="w-[250px] absolute px-4 outline-none flex-1 z-10" />
+          <input v-model="name" class="w-[250px] absolute px-4 outline-none flex-1 z-10" />
           <img :src="selectorBgCreate" alt="select-bg" class="w-full absolute h-auto select-bg" />
         </div>
       </div>
@@ -54,7 +65,7 @@ const heightOptions = [
           <div
             class="relative flex items-center w-full h-[55px] font-[Overpass_regular] text-[16px]"
           >
-            <input class="w-full absolute px-4 outline-none flex-1 z-10" />
+            <input v-model="ageValue" class="w-full absolute px-4 outline-none flex-1 z-10" />
             <img :src="minInputBg" alt="select-bg" class="w-hull absolute h-[55px] select-bg" />
           </div>
           <BaseSelect v-model="age" :type="'min'" :options="ageOptions" />

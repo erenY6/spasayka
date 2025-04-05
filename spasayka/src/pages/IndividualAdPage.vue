@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/authStore'
 
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import YandexMapAd from '@/components/YandexMapAd.vue'
 
 import female from '@/assets/allPictures/female.svg'
 import male from '@/assets/allPictures/male.svg'
@@ -45,7 +46,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="ad" class="flex flex-col w-full h-[100vh] px-12 py-6">
+  <div v-if="ad" class="flex flex-col w-full min-h-[100vh] px-12 py-6">
     <section class="flex flex-col lg:flex-row gap-10 max-w-[1400px] pb-6">
       <div class="w-2/3">
         <div
@@ -57,7 +58,7 @@ onMounted(async () => {
               class="flex flex-row border-b border-[#273274] items-center justify-center py-5 gap-5"
             >
               <h3 class="font-[Signate_Grotesk] text-[25px]">{{ ad.name }}</h3>
-              <img v-if="ad.gender === 'девочка'" :src="female" class="w-[30px] h-[30px]" />
+              <img v-if="ad.gender === 'Девочка'" :src="female" class="w-[30px] h-[30px]" />
               <img v-else :src="male" class="w-[30px] h-[30px]" />
               <p class="font-[Overpass_Regular] text-[20px]">{{ ad.age }}</p>
             </div>
@@ -124,5 +125,7 @@ onMounted(async () => {
         <p v-html="ad.fullDesc"></p>
       </div>
     </div>
+
+    <YandexMapAd :coordinates="ad.coordinates" class="pt-8" />
   </div>
 </template>

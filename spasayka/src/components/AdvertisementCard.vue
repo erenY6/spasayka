@@ -3,6 +3,7 @@
 import '../assets/main.css'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import settingsWindow from '@/assets/allPictures/settingsWindow.svg'
+import { deleteAdById } from '@/data/api'
 
 const props = defineProps({
   id: String,
@@ -88,6 +89,7 @@ onBeforeUnmount(() => {
             </button>
             <hr class="border-t border-[#B3773F]" />
             <button
+              @click.stop="deleteAdById(props.id)"
               class="w-full py-2 px-4 bg-[#DFC5AD] hover:bg-[#E1BB98] transition-colors duration-200 text-red-700"
             >
               Удалить
@@ -105,7 +107,9 @@ onBeforeUnmount(() => {
         ></div>
 
         <div class="relative z-10 space-y-4 px-8">
-          <div class="font-[Signate_Grotesk] text-[14px] leading-tight text-[#55463A] text-justify">
+          <div
+            class="h-full font-[Signate_Grotesk] text-[14px] leading-tight text-[#55463A] text-justify line-clamp-6"
+          >
             {{ description }}
           </div>
         </div>

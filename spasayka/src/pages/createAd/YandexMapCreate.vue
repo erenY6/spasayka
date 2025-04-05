@@ -46,6 +46,7 @@ const movePlacemark = (coords, ymaps) => {
   ymaps.geocode(coords).then((res) => {
     const found = res.geoObjects.get(0)
     address.value = found?.getAddressLine() || ''
+    console.log(address.value)
   })
 }
 
@@ -64,3 +65,9 @@ defineExpose({
     <div ref="mapRef" class="w-full h-[500px] rounded-[20px] overflow-hidden"></div>
   </div>
 </template>
+
+<style scoped>
+:deep(.ymaps-2-1-79-gototech) {
+  display: none;
+}
+</style>
