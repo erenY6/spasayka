@@ -82,11 +82,13 @@ onBeforeUnmount(() => {
             ref="menuRef"
             class="absolute bottom-5 right-2 rounded-[20px] w-[160px] overflow-hidden text-black shadow-md font-[Overpass_Medium] text-[15px]"
           >
-            <button
-              class="w-full py-2 px-4 bg-[#DFC5AD] hover:bg-[#E1BB98] transition-colors duration-200"
-            >
-              Редактировать
-            </button>
+            <router-link :to="`/editAd/${id}`">
+              <button
+                class="w-full py-2 px-4 bg-[#DFC5AD] hover:bg-[#E1BB98] transition-colors duration-200"
+              >
+                Редактировать
+              </button>
+            </router-link>
             <hr class="border-t border-[#B3773F]" />
             <button
               @click.stop="deleteAdById(props.id)"

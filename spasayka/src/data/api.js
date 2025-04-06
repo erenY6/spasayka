@@ -94,4 +94,18 @@ export async function deleteAdById(adsId) {
   return res.data
 }
 
+export async function fetchAdById(adsId) {
+  const res = await api.get(`/animal-ad/${adsId}`)
+  return res.data
+}
+
+export async function updateAnimalAd(adId, formData) {
+  const response = await api.put(`/animal-ad/${adId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+  return response.data
+}
+
 export default api

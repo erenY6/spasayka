@@ -2,7 +2,8 @@
 import contentShelter from '@/data/content.json'
 import brownBg2 from '@/assets/aboutPage/brownBg2.png'
 import greenBg2 from '@/assets/aboutPage/greenBg2.png'
-import shelterLogo from '@/assets/shelterLogo.png'
+//import shelterLogo from '@/assets/shelterLogo.png'
+import shelters from '@/data/shelters.json'
 import ShelterCard from '@/components/ShelterCard.vue'
 
 const items = [
@@ -21,19 +22,6 @@ const items = [
   {
     text: 'Поддержать приют юридически или технически',
     bg: greenBg2,
-  },
-]
-
-const shelters = [
-  {
-    name: 'Фонд "Помощь бездомным собакам"',
-    address: 'Санкт-Петербург, проспект Большой Смоленский, д. 9',
-    phone: '8 (911) 0-999-666',
-    email: 'info@priut.ru',
-    website: 'https://priut.ru/',
-    logo: shelterLogo,
-    about:
-      'История спасения бездомных животных Кирой Никитиной и Татьяной Шеиной началась в 2001 году, когда в Санкт-Петербурге был зарегистрирован Благотворительный Фонд «Помощь бездомным собакам».',
   },
 ]
 </script>
@@ -92,7 +80,7 @@ const shelters = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 justify-items-center">
         <ShelterCard
-          v-for="(shelter, index) in Array(8).fill(shelters[0])"
+          v-for="(shelter, index) in shelters"
           :key="index"
           :name="shelter.name"
           :address="shelter.address"

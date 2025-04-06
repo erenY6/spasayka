@@ -15,7 +15,9 @@ const ageValue = ref('')
 
 defineExpose({
   name,
-  age: computed(() => `${ageValue.value} ${age.value}`),
+  ageValue,
+  age,
+  fullAge: computed(() => `${ageValue.value} ${age.value}`),
   gender,
   animalType,
   height,

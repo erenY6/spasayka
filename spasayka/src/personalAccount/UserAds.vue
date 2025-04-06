@@ -46,10 +46,12 @@ const totalPages = computed(() => {
   <div class="w-full p-6 h-full flex flex-col bg-[#DFD2C8]">
     <div class="flex flex-row px-4 justify-between">
       <div class="font-[Signate_Grotesk] text-[20px]">Мои объявления</div>
-      <div class="flex flex-row gap-4 font-[Signate_Grotesk] text-[20px]">
-        Создать объявление
-        <img :src="addAd" />
-      </div>
+      <router-link to="/createAd">
+        <div class="flex flex-row gap-4 font-[Signate_Grotesk] text-[20px] cursor-pointer">
+          Создать объявление
+          <img :src="addAd" />
+        </div>
+      </router-link>
     </div>
     <div
       class="w-full pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center"

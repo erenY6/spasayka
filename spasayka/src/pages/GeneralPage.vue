@@ -9,7 +9,8 @@ import ShelterCard from '@/components/ShelterCard.vue'
 import content from '@/data/content.json'
 import starIcon from '@/assets/star.svg'
 import dogCatImage from '@/assets/dog-cat.svg'
-import shelterLogo from '@/assets/shelterLogo.png'
+//import shelterLogo from '@/assets/shelterLogo.png'
+import shelters from '@/data/shelters.json'
 
 const adsStore = useAdsStore()
 
@@ -23,19 +24,6 @@ const pets = ref([adsStore.ads])
 watch(adsStore, (newvalue) => {
   pets.value = newvalue.ads
 })
-
-const shelters = [
-  {
-    name: 'Фонд "Помощь бездомным собакам"',
-    address: 'Санкт-Петербург, проспект Большой Смоленский, д. 9',
-    phone: '8 (911) 0-999-666',
-    email: 'info@priut.ru',
-    website: 'https://priut.ru/',
-    logo: shelterLogo,
-    about:
-      'История спасения бездомных животных Кирой Никитиной и Татьяной Шеиной началась в 2001 году, когда в Санкт-Петербурге был зарегистрирован Благотворительный Фонд «Помощь бездомным собакам».',
-  },
-]
 </script>
 
 <template>
@@ -102,7 +90,7 @@ const shelters = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 justify-items-center">
         <ShelterCard
-          v-for="(shelter, index) in Array(4).fill(shelters[0])"
+          v-for="(shelter, index) in shelters.slice(0, 4)"
           :key="index"
           :name="shelter.name"
           :address="shelter.address"

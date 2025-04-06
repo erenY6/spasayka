@@ -72,7 +72,7 @@ const isFlipped = ref(false)
         <div class="relative z-10">
           <p class="font-[Overpass_Black] text-[20px] text-center mb-2">О фонде</p>
           <p
-            class="font-[Overpass_Medium] text-justify text-[17px] leading-tight font-medium text-[#333]"
+            class="font-[Overpass_Medium] text-justify text-[17px] leading-tight font-medium text-[#333] line-clamp-7"
           >
             {{ about }}
           </p>

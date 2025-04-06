@@ -2,9 +2,20 @@
 import { onMounted, ref } from 'vue'
 import { loadYandexMaps } from '@/useYandex.js'
 
+const props = defineProps({
+  isEdit: { type: Boolean, required: false },
+  coordinatesEdit: { type: Array, required: false },
+})
+
 const mapRef = ref(null)
 const address = ref('')
-const coordinates = ref([59.938784, 30.314997])
+const coordinates = ref([])
+
+if (props.isEdit == true) {
+  coordinates.value = props.coordinatesEdit
+} else {
+  coordinates.value = [59.938784, 30.314997]
+}
 
 let map, placemark
 

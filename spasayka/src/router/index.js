@@ -58,6 +58,11 @@ const router = createRouter({
         { path: '', redirect: { name: 'CabinetProfile' } },
       ],
     },
+    {
+      path: '/editAd/:id',
+      name: 'EditAdPage',
+      component: () => import('@/personalAccount/EditAdPage.vue'),
+    },
   ],
   scrollBehavior() {
     return { top: 0 }

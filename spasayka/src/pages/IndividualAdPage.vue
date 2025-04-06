@@ -126,6 +126,6 @@ onMounted(async () => {
       </div>
     </div>
 
-    <YandexMapAd :coordinates="ad.coordinates" class="pt-8" />
+    <YandexMapAd v-if="ad.coordinates !== 'null'" :coordinates="ad.coordinates" class="pt-8" />
   </div>
 </template>
