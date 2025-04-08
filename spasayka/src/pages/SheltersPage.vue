@@ -2,9 +2,9 @@
 import contentShelter from '@/data/content.json'
 import brownBg2 from '@/assets/aboutPage/brownBg2.png'
 import greenBg2 from '@/assets/aboutPage/greenBg2.png'
-//import shelterLogo from '@/assets/shelterLogo.png'
 import shelters from '@/data/shelters.json'
 import ShelterCard from '@/components/ShelterCard.vue'
+import YandexMapShelters from '@/components/YandexMapShelters.vue'
 
 const items = [
   {
@@ -92,5 +92,8 @@ const items = [
         />
       </div>
     </section>
+    <div class="w-full h-full pt-8">
+      <YandexMapShelters :shelters="shelters" />
+    </div>
   </div>
 </template>

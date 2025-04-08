@@ -39,7 +39,7 @@ const isFlipped = ref(false)
           class="absolute left-0 top-0 w-[140px] h-[50%] bg-[#D9C7B3] rounded-br-[50px] z-0"
         ></div>
 
-        <img :src="logo" class="w-[100px] rounded-full object-cover z-10" />
+        <img :src="logo" class="w-[100px] h-[100px] rounded-full object-cover z-10 bg-white" />
 
         <div class="flex flex-col gap-2 relative z-10">
           <div class="flex flex-col justify-center gap-1 flex-1">
@@ -61,7 +61,14 @@ const isFlipped = ref(false)
           </div>
           <div class="flex items-center gap-2 font-[Overpass_Medium] text-[16px]">
             <img :src="iconSite" alt="Сайт" class="w-[30px] h-[30px]" />
-            <span>{{ website }}</span>
+            <a
+              :href="website"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[#55463A] hover:underline break-all"
+            >
+              {{ website }}
+            </a>
           </div>
         </div>
       </div>
