@@ -12,9 +12,22 @@ let map = null
 let ymapsInstance = null
 let placemarks = []
 
+const activePlacemark = ref(null)
+
 const zoomToShelter = (shelter) => {
   if (map && shelter.coordinates) {
     map.setCenter(shelter.coordinates, 14, { duration: 300 })
+
+    placemarks.forEach((p) => p.options.set('iconColor', '#55463A'))
+
+    const targetPlacemark = placemarks.find(
+      (p) => JSON.stringify(p.geometry.getCoordinates()) === JSON.stringify(shelter.coordinates),
+    )
+
+    if (targetPlacemark) {
+      targetPlacemark.options.set('iconColor', 'red')
+      activePlacemark.value = targetPlacemark
+    }
   }
 }
 
@@ -32,6 +45,7 @@ onMounted(async () => {
       shelter.coordinates,
       {
         hintContent: shelter.name,
+        iconCaption: shelter.name,
         balloonContent: `<strong>${shelter.name}</strong><br><a href="${shelter.website}" target="_blank">Перейти на сайт</a>`,
       },
       {
@@ -51,20 +65,20 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex w-full h-full">
+  <div class="flex w-full items-center h-full gap-3">
     <div
-      class="flex flex-col w-[350px] bg-[#ECF0B0] rounded-l-[20px] gap-3 overflow-auto p-4 border-r border-[#6e9672]"
+      class="relative flex flex-col size-min w-[350px] bg-[#ECF0B0] rounded-[18px] gap-3 overflow-auto p-4"
     >
-      <div class="flex w-full bg-[#BBD492] justify-center items-center rounded-[8px]">
+      <div class="absolute flex w-[318px] bg-[#AEB366] justify-center items-center rounded-[8px]">
         <h2 class="font-[Signate_Grotesk] text-lg py-3">Приюты</h2>
       </div>
-      <div class="flex w-full bg-[#b7d99e] justify-center py-3 items-center rounded-[8px]">
+      <div class="flex w-full bg-[#D4D98A] justify-center items-center rounded-[8px]">
         <ul class="space-y-3">
           <li
             v-for="shelter in shelters"
             :key="shelter.name"
             @click="zoomToShelter(shelter)"
-            class="cursor-pointer hover:text-[#8B5E3C] text-center py-2 text-[15px] font-[Overpass_Medium]"
+            class="cursor-pointer hover:bg-[#ECF0B0] text-center py-3 text-[15px] font-[Overpass_SemiBold]"
           >
             {{ shelter.name }}
           </li>
@@ -73,7 +87,10 @@ onMounted(async () => {
     </div>
 
     <div class="flex-1 w-full">
-      <div ref="mapRef" class="w-full h-[600px] rounded-r-[20px] overflow-hidden"></div>
+      <div
+        ref="mapRef"
+        class="w-full h-[600px] rounded-[20px] overflow-hidden border-1 border-[#ECF0B0]"
+      ></div>
     </div>
   </div>
 </template>

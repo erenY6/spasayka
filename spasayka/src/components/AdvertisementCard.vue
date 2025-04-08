@@ -55,12 +55,19 @@ onBeforeUnmount(() => {
       ]"
     >
       <div
-        class="absolute w-full h-full rounded-[20px] bg-[#F7E8DA] flex items-center gap-4 p-4 backface-hidden overflow-hidden"
-        :class="withShadow ? 'shadow-md ' : ''"
+        class="absolute w-full h-full rounded-[20px] flex items-center gap-4 p-4 backface-hidden overflow-hidden"
+        :class="[
+          withShadow ? 'shadow-md  bg-[#F7E8DA]' : '',
+          info1 === 'Собака' ? 'bg-[#ECF0B0]' : 'bg-[#F7E8DA]',
+        ]"
       >
         <img :src="image" alt="Животное" class="w-[150px] h-[150px] rounded-[12px] object-cover" />
         <div
-          class="absolute right-0 top-0 bg-[#DFC5AD] rounded-bl-[40px] px-3 pt-3 pb-6 min-w-[120px] text-right"
+          class="absolute right-0 top-0 rounded-bl-[40px] px-3 pt-3 pb-6 min-w-[120px] text-right"
+          :class="[
+            withShadow ? ' bg-[#DFC5AD]' : '',
+            info1 === 'Собака' ? 'bg-[#BBD492]' : 'bg-[#DFC5AD]',
+          ]"
         >
           <p class="font-[Overpass_Black] leading-tight">{{ name }}</p>
           <p class="font-[Overpass_Regular] -mt-1">{{ gender }}</p>
@@ -101,11 +108,18 @@ onBeforeUnmount(() => {
       </div>
 
       <div
-        class="w-full h-full rounded-[20px] bg-[#F7E8DA] p-4 flex flex-col justify-between rotate-y-180 backface-hidden relative overflow-hidden"
-        :class="withShadow ? 'shadow-md ' : ''"
+        class="w-full h-full rounded-[20px] p-4 flex flex-col justify-between rotate-y-180 backface-hidden relative overflow-hidden"
+        :class="[
+          withShadow ? 'shadow-md bg-[#F7E8DA]' : '',
+          info1 === 'Собака' ? 'bg-[#ECF0B0]' : 'bg-[#F7E8DA]',
+        ]"
       >
         <div
-          class="absolute right-0 top-0 w-[120px] h-[80px] bg-[#DFC5AD] rounded-bl-[50px] z-0"
+          class="absolute right-0 top-0 w-[120px] h-[80px] rounded-bl-[50px] z-0"
+          :class="[
+            withShadow ? ' bg-[#DFC5AD]' : '',
+            info1 === 'Собака' ? 'bg-[#BBD492]' : 'bg-[#DFC5AD]',
+          ]"
         ></div>
 
         <div class="relative z-10 space-y-4 px-8">
