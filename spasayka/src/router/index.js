@@ -9,6 +9,7 @@ import UserProfile from '@/personalAccount/UserProfile.vue'
 import UserChats from '@/personalAccount/UserChats.vue'
 import UserAds from '@/personalAccount/UserAds.vue'
 import CreateAdPage from '@/pages/CreateAdPage.vue'
+import MapPage from '@/pages/MapPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,11 @@ const router = createRouter({
       path: '/auth',
       name: 'auth',
       component: AuthPage,
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: MapPage,
     },
     {
       path: '/createAd',

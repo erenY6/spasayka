@@ -1,7 +1,9 @@
 export const loadYandexMaps = () => {
   return new Promise((resolve, reject) => {
     if (window.ymaps) {
-      resolve(window.ymaps)
+      window.ymaps.ready(() => {
+        resolve(window.ymaps)
+      })
       return
     }
 

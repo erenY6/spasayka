@@ -15,7 +15,7 @@ let placemarks = []
 const activePlacemark = ref(null)
 
 const zoomToShelter = (shelter) => {
-  if (map && shelter.coordinates) {
+  if (map && shelter.coordinates && shelter.coordinates.length === 2) {
     map.setCenter(shelter.coordinates, 14, { duration: 300 })
 
     placemarks.forEach((p) => p.options.set('iconColor', '#55463A'))
