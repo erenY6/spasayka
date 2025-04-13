@@ -53,6 +53,7 @@ const animalOptions = [
   { label: 'Любой', value: 'Любой' },
   { label: 'Кошка', value: 'Кошка' },
   { label: 'Собака', value: 'Собака' },
+  { label: 'Другой', value: 'Другой' },
 ]
 
 const genderOptions = [
@@ -132,7 +133,7 @@ watch([animalType, gender, age, height, condition], () => {
         :description="pet.description"
       />
     </div>
-    <div class="flex justify-center pt-6 gap-2">
+    <div v-if="filteredPets.length > 6" class="flex justify-center pt-6 gap-2">
       <button
         v-for="page in totalPages"
         :key="page"

@@ -16,6 +16,8 @@ import iconLocation from '@/assets/map.svg'
 import iconPhone from '@/assets/iconPhone.svg'
 import chat from '@/assets/allPictures/chat.svg'
 import checkMark from '@/assets/allPictures/checkMark.svg'
+import userIcon from '@/assets/allPictures/userIcon.svg'
+import emailIcon from '@/assets/iconEmail.svg'
 
 const route = useRoute()
 const router = useRouter()
@@ -53,7 +55,7 @@ onMounted(async () => {
           class="relative bg-no-repeat bg-contain bg-left-top w-full min-h-[450px]"
           :style="`background-image: url('/src/assets/allPictures/sticker.svg');`"
         >
-          <div class="flex flex-col items-center">
+          <div class="flex flex-col items-center pb-4">
             <div
               class="flex flex-row border-b border-[#273274] items-center justify-center py-5 gap-5"
             >
@@ -64,28 +66,55 @@ onMounted(async () => {
             </div>
           </div>
 
-          <div class="flex gap-2 items-center pl-10 p-4">
+          <div v-if="ad.address != 'null'" class="flex gap-2 items-center pl-6 px-4 pb-4">
             <img :src="iconLocation" alt="Иконка" class="w-[35px] h-[35px]" />
             <p class="font-[Overpass_Italic] text-[18px]">
               {{ ad.address || 'Город не указан' }}
             </p>
           </div>
 
-          <div class="flex gap-2 items-center pl-10 pb-4">
-            <img :src="iconPhone" alt="Телефон" class="w-[35px] h-[35px]" />
-            <span class="font-[Overpass_Regular] text-[20px]">{{
-              ad.author?.phone || 'Телефон скрыт'
-            }}</span>
+          <div class="flex flex-row gap-4">
+            <div
+              v-if="ad.visibleName || ad.visibleSurname"
+              class="flex gap-2 items-center pl-6 pb-4"
+            >
+              <img :src="userIcon" class="w-[35px] h-[35px]" />
+              <span class="font-[Overpass_Regular] text-[18px]"
+                >{{ ad.visibleName ? ad.author.name : '' }}
+                {{ ad.visibleSurname ? ad.author.surname : '' }}</span
+              >
+            </div>
+            <div
+              v-if="ad.authorId !== authStore.user.id"
+              class="flex gap-2 items-center pb-4"
+              :class="ad.visibleName || ad.visibleSurname ? '' : 'pl-6'"
+            >
+              <img :src="chat" alt="Чат" class="w-[35px] h-[35px]" />
+              <a
+                href="#"
+                @click="openChat"
+                class="text-[#273275] underline font-[Overpass_Regular] text-[16px]"
+                >перейти к чату</a
+              >
+            </div>
           </div>
 
-          <div class="flex gap-2 items-center pl-10 pb-4">
-            <img :src="chat" alt="Чат" class="w-[35px] h-[35px]" />
-            <a
-              href="#"
-              @click="openChat"
-              class="text-[#273275] underline font-[Overpass_Regular] text-[16px]"
-              >перейти к чату</a
+          <div class="flex flex-row gap-4">
+            <div v-if="ad.visiblePhone" class="flex gap-2 items-center pl-6 pb-4">
+              <img :src="iconPhone" alt="Телефон" class="w-[35px] h-[35px]" />
+              <span class="font-[Overpass_Regular] text-[18px]">{{
+                ad.author?.phone || 'Телефон скрыт'
+              }}</span>
+            </div>
+
+            <div
+              v-if="ad.visibleEmail"
+              class="flex gap-2 items-center pb-4"
+              :class="!ad.visiblePhone ? 'pl-6' : ''"
             >
+              <img :src="emailIcon" alt="Телефон" class="w-[35px] h-[35px]" />
+              <span class="font-[Overpass_Regular] text-[18px]">{{ ad.author?.email || '' }}</span>
+            </div>
           </div>
 
           <div class="flex flex-col items-center justify-start">

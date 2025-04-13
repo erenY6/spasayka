@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import circle from '@/assets/allPictures/circle.svg'
 import circleMark from '@/assets/allPictures/circleMark.svg'
@@ -26,6 +26,10 @@ const toggleField = (key) => {
   localVisibility.value[key] = !localVisibility.value[key]
   emit('update:visibility', { ...localVisibility.value })
 }
+
+watch(props.visibility, (newValue) => {
+  localVisibility.value = { ...newValue }
+})
 </script>
 
 <template>

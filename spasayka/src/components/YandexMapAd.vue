@@ -18,7 +18,7 @@ const initMap = async () => {
   map = new ymaps.Map(mapRef.value, {
     center: parsedCoords,
     zoom: 14,
-    controls: ['zoomControl', 'geolocationControl', 'routeButtonControl'],
+    controls: ['zoomControl', 'geolocationControl'],
   })
 
   placemark = new ymaps.Placemark(
@@ -31,6 +31,21 @@ const initMap = async () => {
   )
 
   map.geoObjects.add(placemark)
+
+  const routePanelControl = new ymaps.control.RoutePanel({
+    options: {
+      autofocus: false,
+      showHeader: true,
+      float: 'right',
+    },
+  })
+  routePanelControl.routePanel.state.set({
+    type: 'auto',
+    fromEnabled: true,
+    toEnabled: false,
+    to: parsedCoords,
+  })
+  map.controls.add(routePanelControl)
 }
 
 onMounted(() => {

@@ -143,7 +143,10 @@ const handleSubmit = async () => {
   formData.append('description', description.value)
   formData.append('fullDesc', description.value)
   formData.append('authorId', authStore.user.id)
-
+  formData.append('visibleName', visibleFields.value.name)
+  formData.append('visibleSurname', visibleFields.value.surname)
+  formData.append('visibleEmail', visibleFields.value.email)
+  formData.append('visiblePhone', visibleFields.value.phone)
   statusList.value.forEach((tag) => formData.append('tags', tag))
   images.value.forEach((image) => {
     formData.append('images', image.file)

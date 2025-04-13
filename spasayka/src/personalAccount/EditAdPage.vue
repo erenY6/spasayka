@@ -20,7 +20,7 @@ const id = route.params.id
 const basicInfoComponent = ref(null)
 const mapComponent = ref(null)
 const statusList = ref([])
-const visibleFields = ref({ name: true, surname: false, email: true, phone: true })
+const visibleFields = ref({ name: null, surname: null, email: null, phone: null })
 const description = ref('')
 const images = ref([])
 const fileInput = ref(null)
@@ -29,6 +29,8 @@ const errorMessage = ref('')
 const showOnMap = ref(true)
 const isDragging = ref(false)
 
+const adMap = ref(null)
+
 onMounted(async () => {
   if (!authStore.user || !authStore.user.id) {
     router.push('/auth')
@@ -36,6 +38,7 @@ onMounted(async () => {
   }
 
   const ad = await fetchAdById(id)
+  adMap.value = await fetchAdById(id)
 
   if (!ad) {
     errorMessage.value = 'Объявление не найдено'
@@ -46,11 +49,16 @@ onMounted(async () => {
   basicInfoComponent.value.gender = ad.gender
   basicInfoComponent.value.age = ad.age.split(' ')[1]
   basicInfoComponent.value.ageValue = ad.age.split(' ')[0]
-  console.log(ad.age.split(' '))
+
+  visibleFields.value.name = ad.visibleName
+  visibleFields.value.surname = ad.visibleSurname
+  visibleFields.value.email = ad.visibleEmail
+  visibleFields.value.phone = ad.visiblePhone
+
   basicInfoComponent.value.animalType = ad.info1
   basicInfoComponent.value.height = ad.info2
   statusList.value = ad.tags.map((tag) => tag.id)
-  console.log(ad.tags)
+
   description.value = ad.fullDesc
   if (ad.coordinates && ad.coordinates !== 'null') {
     mapComponent.value.address = ad.address
@@ -143,6 +151,13 @@ const handleSubmit = async () => {
   formData.append('age', fullAge)
   formData.append('info1', animalType)
   formData.append('info2', height)
+
+  console.log(String(visibleFields.value.name))
+
+  formData.append('visibleName', String(visibleFields.value.name))
+  formData.append('visibleSurname', String(visibleFields.value.surname))
+  formData.append('visibleEmail', String(visibleFields.value.email))
+  formData.append('visiblePhone', String(visibleFields.value.phone))
 
   if (showOnMap.value) {
     formData.append('address', address)
@@ -268,12 +283,14 @@ const handleSubmit = async () => {
         </div>
       </div>
 
-      <YandexMapCreate
-        ref="mapComponent"
-        v-show="showOnMap"
-        :isEdit="true"
-        :coordinatesEdit="ad?.coordinates"
-      />
+      <div v-if="adMap" class="w-full h-full">
+        <YandexMapCreate
+          ref="mapComponent"
+          v-show="showOnMap"
+          :isEdit="true"
+          :coordinatesEdit="adMap?.coordinates.split(',').map(Number)"
+        />
+      </div>
 
       <div class="w-full flex flex-col justify-center items-center pt-6">
         <button

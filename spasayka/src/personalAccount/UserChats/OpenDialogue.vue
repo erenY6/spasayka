@@ -26,6 +26,10 @@ onMounted(() => {
     dialogueId: props.dialogueId,
     readerId: authStore.user.id,
   })
+
+  socket.on('messageRead', () => {
+    loadMessages()
+  })
 })
 
 const loadMessages = () => {

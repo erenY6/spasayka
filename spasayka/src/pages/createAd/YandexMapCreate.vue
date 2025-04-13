@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { loadYandexMaps } from '@/useYandex.js'
 
 const props = defineProps({
@@ -11,12 +11,6 @@ const mapRef = ref(null)
 const address = ref('')
 const coordinates = ref([])
 
-if (props.isEdit == true) {
-  coordinates.value = props.coordinatesEdit
-} else {
-  coordinates.value = [59.938784, 30.314997]
-}
-
 let map, placemark
 
 const initMap = async () => {
@@ -25,7 +19,7 @@ const initMap = async () => {
   map = new ymaps.Map(mapRef.value, {
     center: coordinates.value,
     zoom: 10,
-    controls: ['zoomControl', 'geolocationControl', 'searchControl'],
+    controls: ['zoomControl', 'geolocationControl'],
   })
 
   placemark = new ymaps.Placemark(coordinates.value, {}, { draggable: true })
@@ -41,29 +35,48 @@ const initMap = async () => {
     movePlacemark(coords, ymaps)
   })
 
-  map.controls.get('searchControl').events.add('resultselect', async (e) => {
-    const index = e.get('index')
-    const result = await map.controls.get('searchControl').getResult(index)
-    const coords = result.geometry.getCoordinates()
-    movePlacemark(coords, ymaps)
-  })
+  const searchControl = map.controls.get('searchControl')
+  if (searchControl) {
+    searchControl.events.add('resultselect', async (e) => {
+      const index = e.get('index')
+      const result = await searchControl.getResult(index)
+      const coords = result.geometry.getCoordinates()
+      movePlacemark(coords, ymaps)
+    })
+  }
 }
 
 const movePlacemark = (coords, ymaps) => {
   placemark.geometry.setCoordinates(coords)
   coordinates.value = coords
-  console.log(coordinates.value)
 
   ymaps.geocode(coords).then((res) => {
     const found = res.geoObjects.get(0)
     address.value = found?.getAddressLine() || ''
-    console.log(address.value)
   })
 }
 
-onMounted(() => {
-  initMap()
+onMounted(async () => {
+  console.log('ffff', props.isEdit, props.coordinatesEdit)
+
+  if (props.isEdit === true && props.coordinatesEdit != null) {
+    coordinates.value = props.coordinatesEdit
+  } else {
+    coordinates.value = [59.938784, 30.314997]
+  }
+  await initMap()
 })
+
+watch(
+  () => props.coordinatesEdit,
+  (newCoords) => {
+    if (props.isEdit === true && newCoords) {
+      coordinates.value = newCoords
+      initMap()
+    }
+  },
+  { immediate: true },
+)
 
 defineExpose({
   address,

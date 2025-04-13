@@ -70,7 +70,7 @@ const totalPages = computed(() => {
         :withShadow="true"
       />
     </div>
-    <div v-if="myAds.length > 6" class="flex justify-center pt-6 gap-2">
+    <div v-if="myAds.length > 6" class="h-full flex justify-center items-end gap-2 pb-4">
       <button
         v-for="page in totalPages"
         :key="page"

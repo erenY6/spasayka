@@ -17,6 +17,7 @@ const router = useRouter()
 
 let ymaps = null
 let map = null
+let routePanelControl = null
 
 const allTags = [
   { id: 'tag-unknown', label: 'Не известно' },
@@ -37,14 +38,37 @@ onMounted(async () => {
   map = new ymaps.Map(mapRef.value, {
     center: [59.9311, 30.3609],
     zoom: 11,
-    controls: ['zoomControl', 'geolocationControl'],
+    controls: ['geolocationControl'],
   })
+
+  routePanelControl = new ymaps.control.RoutePanel({
+    options: {
+      autofocus: false,
+      showHeader: true,
+      float: 'left',
+    },
+  })
+
+  routePanelControl.routePanel.state.set({
+    type: 'auto',
+    fromEnabled: true,
+    toEnabled: false,
+  })
+  map.controls.add(routePanelControl)
 
   map.controls.add
   new ymaps.control.SearchControl({
     options: { size: 'large', placeholderContent: 'Поиск по адресу' },
   })
   map.events.add('boundschange', updateVisibleAds)
+
+  var zoomControl = new ymaps.control.ZoomControl({
+    options: {
+      size: 'large',
+      position: { top: 225, left: 20 },
+    },
+  })
+  map.controls.add(zoomControl)
 
   renderPlacemarks()
   updateVisibleAds()
@@ -66,11 +90,13 @@ watch(
   () => {
     renderPlacemarks()
     updateVisibleAds()
+    console.log(selectedTags)
   },
   { deep: true },
 )
 
 function filterByTags(ad) {
+  if (!selectedTags.value[0]) return true
   return Array.isArray(ad.tags) && ad.tags.some((tag) => selectedTags.value.includes(tag.id))
 }
 
@@ -99,7 +125,6 @@ function renderPlacemarks() {
   </div>
 `,
         {
-          // Чтобы хинт не обрезался у краёв карты
           getShape: function () {
             const el = this.getElement()
             if (el) {
@@ -153,6 +178,12 @@ function renderPlacemarks() {
       )
 
       placemark.events.add(['click'], () => {
+        const coords = [lat, lng]
+
+        if (routePanelControl?.routePanel.state.get('from')) {
+          routePanelControl.routePanel.state.set({ to: coords })
+          return
+        }
         console.log('Метка нажата:', ad.id)
         router.push(`/ad/${ad.id}`)
       })
@@ -216,6 +247,17 @@ function renderPlacemarks() {
 <style scoped>
 :deep(.ymaps-2-1-79-gototech) {
   display: none;
+}
+:deep(.ymaps-2-1-79-controls__control_toolbar) {
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+:deep(.ymaps-2-1-79-popup_theme_ffffff) {
+  border-radius: 20px !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
 :deep(.custom-hint) {
